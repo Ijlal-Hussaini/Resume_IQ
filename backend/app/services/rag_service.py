@@ -63,14 +63,15 @@ class RAGChatService:
             recent_hist = history[-4:]
             hist_text = "\n".join([f"{m.role.capitalize()}: {m.content}" for m in recent_hist])
 
+        history_block = f"CONVERSATION HISTORY:\n{hist_text}\n" if hist_text else ""
+
         prompt = f"""RECRUITER QUESTION:
 "{query}"
 
 CANDIDATE RESUME CONTEXT:
 {context_text}
 
-{"CONVERSATION HISTORY:\n" + hist_text if hist_text else ""}
-
+{history_block}
 Provide a direct, well-structured, and executive-level answer to the recruiter's question."""
 
         if llm_service.available_providers and ("groq" in llm_service.available_providers or "gemini" in llm_service.available_providers):

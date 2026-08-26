@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Sparkles, Code2, FileText, RefreshCw, Cpu, Layers, Sun, Moon } from "lucide-react";
+import { Sparkles, Code2, RefreshCw, Cpu, Layers, Sun, Moon } from "lucide-react";
 import { GlassButton } from "../ui/GlassButton";
 import { Badge } from "../ui/Badge";
 import { HealthInfo } from "@/lib/types";
@@ -72,11 +72,11 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Status Indicators & Navigation Actions */}
         <div className="flex items-center gap-2.5 sm:gap-3">
           {/* Provider Pill */}
-          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--pill-bg)] border border-[var(--glass-border)] text-xs text-[var(--text-secondary)]">
-            <Cpu className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="text-[var(--text-muted)]">LLM Core:</span>
-            <span className="font-medium truncate max-w-[140px]">
-              {healthInfo?.active_llm_provider || "Google Gemini 2.5"}
+          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-200/80 dark:bg-[var(--pill-bg)] border border-slate-300 dark:border-[var(--glass-border)] text-xs shadow-sm">
+            <Cpu className="w-3.5 h-3.5 text-cyan-700 dark:text-cyan-400" />
+            <span className="text-slate-800 dark:text-[var(--text-muted)] font-bold">LLM Core:</span>
+            <span className="font-bold text-slate-950 dark:text-slate-100 truncate max-w-[140px]">
+              {healthInfo?.active_llm_provider || "Groq (qwen/qwen3.8-27b)"}
             </span>
           </div>
 
@@ -86,10 +86,10 @@ export const Header: React.FC<HeaderProps> = ({
             variant="ghost"
             size="sm"
             onClick={toggleTheme}
-            icon={theme === "dark" ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-violet-600" />}
+            icon={theme === "dark" ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-violet-700" />}
             title="Toggle Light/Dark Theme"
           >
-            <span className="hidden sm:inline">{theme === "dark" ? "Light" : "Dark"}</span>
+            <span className="hidden sm:inline font-semibold text-slate-800 dark:text-slate-200">{theme === "dark" ? "Light" : "Dark"}</span>
           </GlassButton>
 
           {/* Architecture Graph Modal Trigger */}
@@ -97,29 +97,13 @@ export const Header: React.FC<HeaderProps> = ({
             <GlassButton
               variant="ghost"
               size="sm"
-              icon={<Layers className="w-4 h-4 text-violet-400" />}
+              icon={<Layers className="w-4 h-4 text-violet-600 dark:text-violet-400" />}
               onClick={onOpenArchitecture}
-              className="hidden lg:inline-flex"
+              className="hidden lg:inline-flex text-slate-800 dark:text-slate-200 font-semibold"
             >
               Graph Architecture
             </GlassButton>
           )}
-
-          {/* API Documentation */}
-          <a
-            href="http://localhost:8000/docs"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden sm:inline-flex"
-          >
-            <GlassButton
-              variant="ghost"
-              size="sm"
-              icon={<FileText className="w-4 h-4 text-slate-400" />}
-            >
-              API Docs
-            </GlassButton>
-          </a>
 
           {/* Reset / New Session */}
           {hasActiveSession && onReset && (
@@ -133,21 +117,7 @@ export const Header: React.FC<HeaderProps> = ({
             </GlassButton>
           )}
 
-          {/* GitHub Source Code */}
-          <a
-            href="https://github.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex"
-          >
-            <GlassButton
-              variant="ghost"
-              size="sm"
-              icon={<Code2 className="w-4 h-4 text-slate-300" />}
-            >
-              <span className="hidden sm:inline">GitHub</span>
-            </GlassButton>
-          </a>
+          {/* Source Code placeholder — add your repo URL here */}
         </div>
       </div>
     </header>

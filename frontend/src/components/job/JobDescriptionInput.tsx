@@ -108,10 +108,10 @@ export const JobDescriptionInputComponent: React.FC<JobDescriptionInputComponent
         </div>
 
         {/* Auto-Draft Criteria Magic Banner */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-3 rounded-xl bg-violet-500/10 border border-violet-500/25">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-3.5 rounded-xl bg-violet-500/10 dark:bg-violet-500/10 border border-violet-500/25">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-violet-400 shrink-0" />
-            <p className="text-xs text-[var(--text-secondary)]">
+            <Sparkles className="w-4 h-4 text-violet-600 dark:text-violet-400 shrink-0" />
+            <p className="text-xs text-slate-800 dark:text-[var(--text-secondary)] font-medium">
               Have a job title in mind? Let AI automatically synthesize realistic requirements & qualifications.
             </p>
           </div>
@@ -122,8 +122,8 @@ export const JobDescriptionInputComponent: React.FC<JobDescriptionInputComponent
             onClick={handleAutoGenerateJD}
             loading={isGenerating}
             disabled={isGenerating || !jobDescription.job_title?.trim()}
-            icon={<Wand2 className="w-3.5 h-3.5 text-violet-400" />}
-            className="shrink-0 text-xs py-1.5"
+            icon={<Wand2 className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" />}
+            className="shrink-0 text-xs py-1.5 font-semibold text-slate-800 dark:text-white"
           >
             Auto-Draft Criteria
           </GlassButton>
@@ -157,7 +157,7 @@ export const JobDescriptionInputComponent: React.FC<JobDescriptionInputComponent
 
         {/* Action Trigger Row */}
         <div className="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-[var(--glass-border)]">
-          <p className="text-[11px] text-[var(--text-muted)]">
+          <p className="text-xs text-slate-700 dark:text-[var(--text-muted)] font-medium">
             {canRun
               ? "✓ Ready to launch multi-agent LangGraph analysis."
               : "⚠️ Enter a job title or paste the job description to run analysis."}

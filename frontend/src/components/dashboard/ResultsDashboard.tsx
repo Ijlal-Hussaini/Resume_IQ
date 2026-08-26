@@ -10,6 +10,11 @@ import {
   Download,
   Layers,
   ChevronRight,
+  Activity,
+  CheckCircle2,
+  AlertTriangle,
+  XCircle,
+  ArrowLeft,
 } from "lucide-react";
 import { GlassCard } from "../ui/GlassCard";
 import { GlassButton } from "../ui/GlassButton";
@@ -27,21 +32,24 @@ interface ResultsDashboardProps {
   resumeData: ResumeData;
   analysisResult: ResumeAnalysisResult;
   sessionId: string;
+  onNewAnalysis?: () => void;
 }
 
 export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
   resumeData,
   analysisResult,
   sessionId,
+  onNewAnalysis,
 }) => {
   const [activeTab, setActiveTab] = useState<
-    "match" | "rewrites" | "ats" | "profile" | "chat"
+    "match" | "rewrites" | "ats" | "profile" | "chat" | "pipeline"
   >("match");
   const [showExportModal, setShowExportModal] = useState(false);
 
   const candName = resumeData.contact_info.full_name || "Candidate";
   const scores = analysisResult.match_scores;
   const jd = analysisResult.job_breakdown;
+  const logs = analysisResult.pipeline_execution_logs || [];
 
   return (
     <div className="space-y-6 animate-fadeIn">
@@ -70,6 +78,17 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
 
           {/* Quick Action Buttons */}
           <div className="flex flex-wrap items-center gap-2.5">
+            {onNewAnalysis && (
+              <GlassButton
+                variant="ghost"
+                size="md"
+                icon={<ArrowLeft className="w-4 h-4 text-slate-400" />}
+                onClick={onNewAnalysis}
+              >
+                New Analysis
+              </GlassButton>
+            )}
+
             <GlassButton
               variant="secondary"
               size="md"
@@ -152,40 +171,141 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
           <MessageSquare className="w-4 h-4 text-cyan-500" />
           RAG Chat & Citations
         </button>
+
+        <button
+          onClick={() => setActiveTab("pipeline")}
+          className={`flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-xl whitespace-nowrap transition-all cursor-pointer ${
+            activeTab === "pipeline"
+              ? "bg-violet-600 text-white shadow-[0_0_20px_rgba(139,92,246,0.5)]"
+              : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--pill-bg)]"
+          }`}
+        >
+          <Activity className="w-4 h-4 text-violet-400" />
+          Pipeline Logs ({logs.length})
+        </button>
       </div>
 
       {/* Tab Panels */}
       {activeTab === "match" && (
-        <div className="space-y-6">
+        <div className="space-y-6 animate-fadeIn">
           <MatchScoreGauge scores={scores} />
           <SkillGapMatrix gapAnalysis={analysisResult.skill_gaps} />
         </div>
       )}
 
       {activeTab === "rewrites" && (
-        <RewriteSuggestions
-          suggestions={analysisResult.rewrite_suggestions}
-          executiveSummary={analysisResult.executive_summary}
-          strengths={analysisResult.strengths}
-          weaknesses={analysisResult.weaknesses}
-          interviewQuestions={analysisResult.interview_prep_questions}
-        />
+        <div className="animate-fadeIn">
+          <RewriteSuggestions
+            suggestions={analysisResult.rewrite_suggestions}
+            executiveSummary={analysisResult.executive_summary}
+            strengths={analysisResult.strengths}
+            weaknesses={analysisResult.weaknesses}
+            interviewQuestions={analysisResult.interview_prep_questions}
+          />
+        </div>
       )}
 
       {activeTab === "ats" && (
-        <AtsAuditor atsReport={analysisResult.ats_report} />
+        <div className="animate-fadeIn">
+          <AtsAuditor atsReport={analysisResult.ats_report} />
+        </div>
       )}
 
       {activeTab === "profile" && (
-        <ExtractedResumeViewer resumeData={resumeData} />
+        <div className="animate-fadeIn">
+          <ExtractedResumeViewer resumeData={resumeData} />
+        </div>
       )}
 
       {activeTab === "chat" && (
-        <ResumeChatPanel
-          sessionId={sessionId}
-          candidateName={candName}
-          domainIndustry={resumeData.domain_industry}
-        />
+        <div className="animate-fadeIn">
+          <ResumeChatPanel
+            sessionId={sessionId}
+            candidateName={candName}
+            domainIndustry={resumeData.domain_industry}
+          />
+        </div>
+      )}
+
+      {activeTab === "pipeline" && (
+        <div className="animate-fadeIn">
+          <GlassCard className="p-6">
+            <div className="flex items-center justify-between border-b border-[var(--glass-border)] pb-4 mb-5">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-violet-600/20 to-cyan-500/20 border border-[var(--glass-border)] flex items-center justify-center">
+                  <Activity className="w-5 h-5 text-violet-400" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-[var(--card-title)] font-outfit">
+                    LangGraph Pipeline Execution Log
+                  </h3>
+                  <p className="text-xs text-[var(--card-subtitle)]">
+                    Status and timing for each agentic node in the pipeline run.
+                  </p>
+                </div>
+              </div>
+              <Badge variant="violet" size="sm">
+                {logs.length} Nodes Executed
+              </Badge>
+            </div>
+
+            {logs.length > 0 ? (
+              <div className="space-y-3 animate-stagger">
+                {logs.map((log, idx) => (
+                  <div
+                    key={idx}
+                    className="step-connector p-4 rounded-xl bg-[var(--pill-bg)] border border-[var(--glass-border)] hover:border-violet-500/30 transition-all"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                          log.status === "success"
+                            ? "bg-emerald-500/20 text-emerald-400"
+                            : log.status === "warning"
+                            ? "bg-amber-500/20 text-amber-400"
+                            : "bg-rose-500/20 text-rose-400"
+                        }`}>
+                          {log.status === "success" ? (
+                            <CheckCircle2 className="w-4 h-4" />
+                          ) : log.status === "warning" ? (
+                            <AlertTriangle className="w-4 h-4" />
+                          ) : (
+                            <XCircle className="w-4 h-4" />
+                          )}
+                        </div>
+                        <div>
+                          <span className="text-xs font-semibold text-[var(--card-title)]">
+                            {idx + 1}. {log.node}
+                          </span>
+                          <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">
+                            {log.message}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge
+                          variant={
+                            log.status === "success" ? "emerald" : log.status === "warning" ? "amber" : "rose"
+                          }
+                          size="sm"
+                        >
+                          {log.status}
+                        </Badge>
+                        <span className="text-[10px] font-mono text-[var(--text-muted)] bg-[var(--pill-bg)] px-2 py-1 rounded border border-[var(--glass-border)]">
+                          {log.duration_sec}s
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-xs text-[var(--text-muted)] italic text-center py-8">
+                No pipeline execution logs recorded for this session.
+              </p>
+            )}
+          </GlassCard>
+        </div>
       )}
 
       {/* Export Modal */}

@@ -178,8 +178,8 @@ export default function Home() {
         {/* Hero Pitch (Only if no analysis result yet) */}
         {!analysisResult && (
           <div className="text-center space-y-4 max-w-3xl mx-auto py-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/25 text-violet-300 text-xs font-semibold backdrop-blur-md">
-              <Sparkles className="w-3.5 h-3.5 text-violet-400" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-violet-100 text-violet-950 border border-violet-300 dark:bg-violet-500/10 dark:border-violet-500/25 dark:text-violet-300 text-xs font-bold shadow-sm">
+              <Sparkles className="w-3.5 h-3.5 text-violet-700 dark:text-violet-400" />
               <span>Multi-Agent LangGraph Career Intelligence Engine</span>
             </div>
 
@@ -216,7 +216,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
             {/* Step 1: Resume Ingest */}
             <div className="space-y-4">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400 font-mono">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-400 font-mono">
                 <span>Phase 01</span>
                 <span>•</span>
                 <span>Document Ingestion</span>
@@ -233,7 +233,7 @@ export default function Home() {
 
             {/* Step 2: Target Job Description */}
             <div className="space-y-4">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400 font-mono">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-400 font-mono">
                 <span>Phase 02</span>
                 <span>•</span>
                 <span>Target Role & Criteria</span>
@@ -263,6 +263,7 @@ export default function Home() {
             resumeData={parsedResume}
             analysisResult={analysisResult}
             sessionId={sessionId}
+            onNewAnalysis={handleReset}
           />
         )}
       </main>
@@ -284,23 +285,9 @@ export default function Home() {
               LangGraph Architecture
             </button>
             <span>•</span>
-            <a
-              href="http://localhost:8000/docs"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-cyan-300 transition-colors"
-            >
-              OpenAPI Swagger Docs
-            </a>
-            <span>•</span>
-            <a
-              href="https://github.com"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-white transition-colors"
-            >
-              GitHub Repo
-            </a>
+            <span className="text-slate-500 cursor-default">
+              Enterprise Grade
+            </span>
           </div>
         </div>
       </footer>

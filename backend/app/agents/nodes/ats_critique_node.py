@@ -136,7 +136,8 @@ async def ats_critique_node(state: AgentState) -> AgentState:
 
         # 5. Target Keyword Alignment
         must_haves = job.must_have_skills if job else []
-        matched_kws = [kw for kw in must_haves if any(kw.lower() in (resume.raw_text or "").lower() for kw in [kw])] if resume else []
+        resume_text_lower = (resume.raw_text or "").lower() if resume else ""
+        matched_kws = [kw for kw in must_haves if kw.lower() in resume_text_lower] if resume else []
         
         if len(matched_kws) >= len(must_haves) * 0.6:
             checks.append(ATSCheckItem(

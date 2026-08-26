@@ -20,18 +20,18 @@ export const ArchitectureModal: React.FC<ArchitectureModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl">
       <div className="relative w-full max-w-3xl">
-        <GlassCard className="p-6 border-violet-500/30 bg-[#0d0f1a] shadow-[0_25px_60px_rgba(0,0,0,0.8)] max-h-[85vh] overflow-y-auto">
+        <GlassCard className="p-6 border-violet-500/30 bg-[var(--bg-surface)] shadow-[0_25px_60px_rgba(0,0,0,0.4)] max-h-[85vh] overflow-y-auto">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-white/[0.08] pb-4 mb-5">
+          <div className="flex items-center justify-between border-b border-[var(--glass-border)] pb-4 mb-5">
             <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-xl bg-violet-500/20 text-violet-400">
+              <div className="p-2 rounded-xl bg-violet-500/20 text-violet-600 dark:text-violet-400">
                 <Layers className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-white font-outfit">
+                <h3 className="text-base font-bold text-[var(--card-title)] font-outfit">
                   LangGraph Agentic Architecture & RAG Pipeline
                 </h3>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-[var(--card-subtitle)]">
                   Stateful multi-node graph reasoning, local embeddings, and provider abstraction
                 </p>
               </div>
@@ -39,7 +39,7 @@ export const ArchitectureModal: React.FC<ArchitectureModalProps> = ({
 
             <button
               onClick={onClose}
-              className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors"
+              className="text-[var(--text-muted)] hover:text-[var(--text-primary)] p-1 rounded-lg hover:bg-[var(--pill-bg)] transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -47,42 +47,42 @@ export const ArchitectureModal: React.FC<ArchitectureModalProps> = ({
 
           {/* Architecture Highlights Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 mb-6">
-            <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-              <div className="flex items-center gap-2 text-xs font-bold text-violet-300 mb-1">
+            <div className="p-3.5 rounded-xl bg-[var(--pill-bg)] border border-[var(--glass-border)]">
+              <div className="flex items-center gap-2 text-xs font-bold text-violet-700 dark:text-violet-300 mb-1">
                 <GitBranch className="w-4 h-4" />
                 LangGraph State Machine
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
                 7 distinct execution nodes with typed Pydantic state transitions: Extraction ➔ Validation ➔ Decomposition ➔ RAG Matching ➔ Gap Analysis ➔ ATS Audit ➔ XYZ Rewrites.
               </p>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-              <div className="flex items-center gap-2 text-xs font-bold text-cyan-300 mb-1">
+            <div className="p-3.5 rounded-xl bg-[var(--pill-bg)] border border-[var(--glass-border)]">
+              <div className="flex items-center gap-2 text-xs font-bold text-cyan-700 dark:text-cyan-300 mb-1">
                 <Database className="w-4 h-4" />
                 Local Vector RAG & Citations
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
                 Sentence-Transformers embeddings with granular section chunking, cosine retrieval, and grounded citation mapping with zero hallucination.
               </p>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-              <div className="flex items-center gap-2 text-xs font-bold text-emerald-300 mb-1">
+            <div className="p-3.5 rounded-xl bg-[var(--pill-bg)] border border-[var(--glass-border)]">
+              <div className="flex items-center gap-2 text-xs font-bold text-emerald-700 dark:text-emerald-300 mb-1">
                 <Cpu className="w-4 h-4" />
                 Multi-Provider LLM Abstraction
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Groq (Llama-3.3-70b) as sub-second primary provider with Google Gemini 2.0 Flash automatic failover and deterministic local fallback.
+              <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+                Groq (qwen/qwen3.8-27b) as sub-second primary provider with Google Gemini automatic failover and deterministic local fallback.
               </p>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-              <div className="flex items-center gap-2 text-xs font-bold text-amber-300 mb-1">
+            <div className="p-3.5 rounded-xl bg-[var(--pill-bg)] border border-[var(--glass-border)]">
+              <div className="flex items-center gap-2 text-xs font-bold text-amber-700 dark:text-amber-300 mb-1">
                 <ShieldCheck className="w-4 h-4" />
                 Field-Agnostic Extraction
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
                 No hardcoded tech taxonomies. Dynamically parses clinical skills, marketing KPIs, legal statutes, or engineering tolerances with equal precision.
               </p>
             </div>

@@ -3,6 +3,8 @@ from fastapi import APIRouter, HTTPException
 from ..models.api import ApiResponse
 from ..models.chat import ChatRequest, ChatResponse
 from ..services.rag_service import rag_chat_service
+from ..core.vector_store import vector_store_manager
+from ..services.extractor import resume_extractor
 
 router = APIRouter(prefix="/chat", tags=["RAG Resume Chat"])
 logger = logging.getLogger("resumeiq.routers.chat")
@@ -20,10 +22,19 @@ async def chat_with_resume(request: ChatRequest):
 
     session_id = request.session_id or "session_default"
 
+    # If raw resume text is provided but no vector store exists, index it on the fly
+    resume_data = None
+    if request.resume_raw_text:
+        store = vector_store_manager.get_or_create(session_id)
+        if not store.chunks:
+            resume_data = await resume_extractor.extract_resume(request.resume_raw_text)
+            vector_store_manager.index_resume(session_id, resume_data, request.resume_raw_text)
+
     try:
         response: ChatResponse = await rag_chat_service.answer_query(
             query=request.query,
             session_id=session_id,
+            resume_data=resume_data,
             history=request.conversation_history
         )
 

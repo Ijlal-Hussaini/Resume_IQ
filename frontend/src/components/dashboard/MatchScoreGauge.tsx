@@ -46,7 +46,7 @@ export const MatchScoreGauge: React.FC<MatchScoreGaugeProps> = ({ scores }) => {
       <div className="flex flex-col sm:flex-row items-center gap-6 justify-between border-b border-white/[0.08] pb-6 mb-6">
         {/* Animated Circular Gauge */}
         <div className="flex items-center gap-6">
-          <div className="relative w-36 h-36 flex items-center justify-center shrink-0">
+          <div className="relative w-36 h-36 flex items-center justify-center shrink-0 animate-pulse-glow">
             <svg className="w-full h-full transform -rotate-90" viewBox="0 0 160 160">
               {/* Background Circle */}
               <circle

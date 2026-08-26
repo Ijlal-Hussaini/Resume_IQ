@@ -23,6 +23,7 @@ class SessionVectorStore:
     def __init__(self, session_id: str):
         self.session_id = session_id
         self.chunks: List[Chunk] = []
+        self.resume_data: Optional[ResumeData] = None
 
     def add_chunks(self, chunks: List[Chunk]):
         if not chunks:
@@ -62,20 +63,33 @@ class SessionVectorStore:
 
 
 class VectorStoreManager:
-    """Global vector store manager maintaining active sessions."""
+    """Global vector store manager maintaining active sessions with LRU eviction."""
+
+    MAX_SESSIONS = 50  # Prevent unbounded memory growth
 
     def __init__(self):
         self._stores: Dict[str, SessionVectorStore] = {}
+        self._access_order: List[str] = []  # Track access order for LRU eviction
 
     def get_or_create(self, session_id: str) -> SessionVectorStore:
         if session_id not in self._stores:
+            # Evict oldest sessions if at capacity
+            while len(self._stores) >= self.MAX_SESSIONS and self._access_order:
+                oldest = self._access_order.pop(0)
+                self._stores.pop(oldest, None)
+                logger.info(f"Evicted oldest vector store session: {oldest}")
             self._stores[session_id] = SessionVectorStore(session_id)
+        # Update access order (move to end = most recently used)
+        if session_id in self._access_order:
+            self._access_order.remove(session_id)
+        self._access_order.append(session_id)
         return self._stores[session_id]
 
     def index_resume(self, session_id: str, resume_data: ResumeData, raw_text: Optional[str] = None):
         """Builds granular chunks from structured resume data."""
         store = self.get_or_create(session_id)
         store.chunks.clear()  # Refresh session chunks
+        store.resume_data = resume_data
 
         chunks_to_add: List[Chunk] = []
         chunk_idx = 0

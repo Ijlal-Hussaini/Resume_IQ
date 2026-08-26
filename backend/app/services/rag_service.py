@@ -30,6 +30,11 @@ class RAGChatService:
         history: Optional[List[ChatMessage]] = None
     ) -> ChatResponse:
         """Answers recruiter query using grounded vector retrieval and citation extraction."""
+        # Retrieve session store to get resume_data if not provided
+        store = vector_store_manager.get_or_create(session_id)
+        if not resume_data and store.resume_data:
+            resume_data = store.resume_data
+
         # 1. Retrieve top relevant chunks from vector store
         citations: List[CitationSource] = vector_store_manager.retrieve_citations(
             session_id=session_id,
@@ -74,24 +79,25 @@ Please provide a clear, well-structured answer citing specific achievements, rol
         if llm:
             try:
                 answer = await llm_service.invoke(prompt, RAG_CHAT_SYSTEM_PROMPT)
-                followups = self._generate_suggested_followups(query, resume_data)
-                return ChatResponse(
-                    answer=answer.strip(),
-                    citations=citations,
-                    suggested_followups=followups,
-                    confidence_verdict="Grounded in Ingested Resume Sections"
-                )
+                if answer and not answer.startswith("System running in fallback"):
+                    followups = self._generate_suggested_followups(query, resume_data)
+                    return ChatResponse(
+                        answer=answer.strip(),
+                        citations=citations,
+                        suggested_followups=followups,
+                        confidence_verdict="Grounded in Ingested Resume Sections"
+                    )
             except Exception as e:
                 logger.warning(f"LLM RAG chat failed: {e}. Executing heuristic answer.")
 
-        # Fallback Heuristic Generator
+        # Fallback Heuristic Generator with grounded citations
         fallback_answer = self._generate_heuristic_answer(query, resume_data, citations)
         followups = self._generate_suggested_followups(query, resume_data)
         return ChatResponse(
             answer=fallback_answer,
             citations=citations,
             suggested_followups=followups,
-            confidence_verdict="Extracted directly from resume data"
+            confidence_verdict="Extracted directly from candidate profile"
         )
 
     def _generate_heuristic_answer(

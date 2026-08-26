@@ -170,7 +170,32 @@ class ResumeExtractorService:
             year_text = year_match.group(0).strip() if year_match else None
 
             # Field of Study
-            field_study = "Software Engineering" if "software" in combined_edu.lower() else "Computer Science" if "computer" in combined_edu.lower() else "Domain Specialization"
+            # Field of Study — broad domain detection
+            edu_lower = combined_edu.lower()
+            if "software" in edu_lower:
+                field_study = "Software Engineering"
+            elif "computer" in edu_lower:
+                field_study = "Computer Science"
+            elif "nursing" in edu_lower or "bsn" in edu_lower:
+                field_study = "Nursing"
+            elif "marketing" in edu_lower or "communications" in edu_lower:
+                field_study = "Marketing & Communications"
+            elif "business" in edu_lower or "mba" in edu_lower or "management" in edu_lower:
+                field_study = "Business Administration"
+            elif "finance" in edu_lower or "accounting" in edu_lower or "economics" in edu_lower:
+                field_study = "Finance & Accounting"
+            elif "mechanical" in edu_lower or "civil" in edu_lower or "electrical" in edu_lower:
+                field_study = "Engineering"
+            elif "education" in edu_lower or "teaching" in edu_lower:
+                field_study = "Education"
+            elif "data" in edu_lower or "information" in edu_lower:
+                field_study = "Data Science & Information Systems"
+            elif "psychology" in edu_lower:
+                field_study = "Psychology"
+            elif "medical" in edu_lower or "medicine" in edu_lower or "mbbs" in edu_lower:
+                field_study = "Medical Sciences"
+            else:
+                field_study = None  # Let it be inferred or omitted
 
             educations.append(Education(
                 degree=degree_title,

@@ -24,7 +24,15 @@ async def parse_resume_file(
     if not file.filename:
         raise HTTPException(status_code=400, detail="Uploaded file has no filename")
 
-    # Validate file size & extension
+    # Validate file extension first (fail fast before reading content)
+    file_ext = "." + file.filename.rsplit(".", 1)[-1].lower() if "." in file.filename else ""
+    if file_ext not in [e.lower() for e in settings.ALLOWED_EXTENSIONS]:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unsupported file format '{file_ext}'. Allowed: {', '.join(settings.ALLOWED_EXTENSIONS)}"
+        )
+
+    # Validate file size
     content = await file.read()
     if len(content) > settings.MAX_FILE_SIZE_MB * 1024 * 1024:
         raise HTTPException(

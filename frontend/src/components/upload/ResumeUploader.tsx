@@ -147,7 +147,7 @@ export const ResumeUploader: React.FC<ResumeUploaderProps> = ({
   return (
     <div className="space-y-6">
       {/* 1-Click Multi-Domain Demo Personas */}
-      <GlassCard className="border-violet-500/20 bg-gradient-to-r from-violet-950/20 via-purple-950/10 to-slate-900/40 p-5">
+      <GlassCard className="border-violet-500/25 dark:border-violet-500/20 bg-gradient-to-r from-violet-500/10 via-purple-500/5 to-cyan-500/5 dark:from-violet-950/20 dark:via-purple-950/10 dark:to-slate-900/40 p-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-xl bg-violet-500/15 border border-violet-500/30">
@@ -188,7 +188,7 @@ export const ResumeUploader: React.FC<ResumeUploaderProps> = ({
                 <p className="text-xs text-[var(--card-subtitle)] line-clamp-1 mt-0.5">{profile.role}</p>
               </div>
 
-              <div className="flex items-center justify-between mt-3 pt-2 border-t border-[var(--glass-border)] text-[11px] text-[var(--text-muted)] group-hover:text-violet-400">
+              <div className="flex items-center justify-between mt-3 pt-2 border-t border-[var(--glass-border)] text-[11px] text-slate-700 dark:text-[var(--text-muted)] font-semibold group-hover:text-violet-600 dark:group-hover:text-violet-400">
                 <span>Load Profile + JD</span>
                 <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
               </div>
@@ -214,16 +214,16 @@ export const ResumeUploader: React.FC<ResumeUploaderProps> = ({
           <div className="flex bg-[var(--pill-bg)] p-1 rounded-xl border border-[var(--glass-border)]">
             <button
               onClick={() => setActiveTab("file")}
-              className={`px-3 py-1 text-xs font-medium rounded-lg transition-all ${
-                activeTab === "file" ? "bg-violet-600 text-white shadow" : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+              className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
+                activeTab === "file" ? "bg-violet-600 text-white shadow-md" : "text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
               }`}
             >
               Upload Document
             </button>
             <button
               onClick={() => setActiveTab("text")}
-              className={`px-3 py-1 text-xs font-medium rounded-lg transition-all ${
-                activeTab === "text" ? "bg-violet-600 text-white shadow" : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+              className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
+                activeTab === "text" ? "bg-violet-600 text-white shadow-md" : "text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
               }`}
             >
               Paste Text
@@ -308,11 +308,11 @@ export const ResumeUploader: React.FC<ResumeUploaderProps> = ({
                     Supports PDF, DOCX, TXT, or scanned images. Max file size 15MB.
                   </p>
 
-                  <div className="flex items-center gap-2 text-[11px] text-[var(--text-muted)]">
-                    <span className="px-2 py-0.5 rounded bg-[var(--pill-bg)] border border-[var(--glass-border)] font-mono">PDF</span>
-                    <span className="px-2 py-0.5 rounded bg-[var(--pill-bg)] border border-[var(--glass-border)] font-mono">DOCX</span>
-                    <span className="px-2 py-0.5 rounded bg-[var(--pill-bg)] border border-[var(--glass-border)] font-mono">TXT</span>
-                    <span className="px-2 py-0.5 rounded bg-[var(--pill-bg)] border border-[var(--glass-border)] font-mono">OCR Fallback</span>
+                  <div className="flex items-center gap-2 text-[11px] text-slate-700 dark:text-[var(--text-muted)] font-medium">
+                    <span className="px-2 py-0.5 rounded bg-[var(--pill-bg)] border border-[var(--glass-border)] font-mono font-semibold text-slate-800 dark:text-slate-300">PDF</span>
+                    <span className="px-2 py-0.5 rounded bg-[var(--pill-bg)] border border-[var(--glass-border)] font-mono font-semibold text-slate-800 dark:text-slate-300">DOCX</span>
+                    <span className="px-2 py-0.5 rounded bg-[var(--pill-bg)] border border-[var(--glass-border)] font-mono font-semibold text-slate-800 dark:text-slate-300">TXT</span>
+                    <span className="px-2 py-0.5 rounded bg-[var(--pill-bg)] border border-[var(--glass-border)] font-mono font-semibold text-slate-800 dark:text-slate-300">OCR Fallback</span>
                   </div>
                 </>
               )}

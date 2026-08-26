@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   :root {
     --bg-base: #07080d;
@@ -21,21 +23,21 @@
   }
 
   html.light {
-    --bg-base: #f1f5f9;
+    --bg-base: #f8fafc;
     --bg-surface: #ffffff;
     --text-primary: #0f172a;
-    --text-secondary: #334155;
-    --text-muted: #64748b;
+    --text-secondary: #1e293b;
+    --text-muted: #475569;
     --accent-primary: #7c3aed;
     --accent-cyan: #0284c7;
     --accent-emerald: #059669;
-    --glass-bg: rgba(255, 255, 255, 0.92);
-    --glass-border: rgba(15, 23, 42, 0.12);
-    --glass-glow: rgba(124, 58, 237, 0.08);
+    --glass-bg: rgba(255, 255, 255, 0.96);
+    --glass-border: rgba(15, 23, 42, 0.14);
+    --glass-glow: rgba(124, 58, 237, 0.1);
     --input-bg: #ffffff;
     --card-title: #0f172a;
-    --card-subtitle: #475569;
-    --pill-bg: rgba(15, 23, 42, 0.05);
+    --card-subtitle: #334155;
+    --pill-bg: rgba(15, 23, 42, 0.06);
     --shadow-card: 0 10px 35px -8px rgba(15, 23, 42, 0.08), 0 2px 8px -2px rgba(15, 23, 42, 0.04), inset 0 1px 0 0 #ffffff;
   }
 
@@ -286,4 +288,94 @@ html.light .text-gradient-accent {
   background: linear-gradient(135deg, #6d28d9 0%, #0284c7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* Smooth Scroll & Focus Accessibility */
+html {
+  scroll-behavior: smooth;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Fade-In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Slide-Up Animation */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slideUp {
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Staggered Entrance for children */
+.animate-stagger > * {
+  opacity: 0;
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-stagger > *:nth-child(1) { animation-delay: 0.05s; }
+.animate-stagger > *:nth-child(2) { animation-delay: 0.1s; }
+.animate-stagger > *:nth-child(3) { animation-delay: 0.15s; }
+.animate-stagger > *:nth-child(4) { animation-delay: 0.2s; }
+.animate-stagger > *:nth-child(5) { animation-delay: 0.25s; }
+.animate-stagger > *:nth-child(6) { animation-delay: 0.3s; }
+.animate-stagger > *:nth-child(7) { animation-delay: 0.35s; }
+
+/* Pulsing Glow for Score Gauge */
+@keyframes pulseGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 18px rgba(139, 92, 246, 0.6));
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+/* Step Connector Line (for pipeline) */
+.step-connector {
+  position: relative;
+}
+
+.step-connector::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: -12px;
+  width: 2px;
+  height: 12px;
+  background: linear-gradient(to bottom, rgba(139, 92, 246, 0.4), rgba(139, 92, 246, 0.15));
+}
+
+.step-connector:first-child::before {
+  display: none;
 }

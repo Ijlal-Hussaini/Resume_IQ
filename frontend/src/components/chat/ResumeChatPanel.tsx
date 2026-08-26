@@ -137,7 +137,17 @@ export const ResumeChatPanel: React.FC<ResumeChatPanelProps> = ({
                     : "bg-[var(--pill-bg)] text-[var(--text-primary)] border border-[var(--glass-border)] rounded-bl-none shadow-sm"
                 }`}
               >
-                <div className="whitespace-pre-wrap font-sans">{msg.content}</div>
+                <div className="whitespace-pre-wrap font-sans">{
+                  msg.content.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/).map((part, pIdx) => {
+                    if (part.startsWith("**") && part.endsWith("**")) {
+                      return <strong key={pIdx} className="font-semibold text-[var(--card-title)]">{part.slice(2, -2)}</strong>;
+                    }
+                    if (part.startsWith("*") && part.endsWith("*")) {
+                      return <em key={pIdx}>{part.slice(1, -1)}</em>;
+                    }
+                    return <span key={pIdx}>{part}</span>;
+                  })
+                }</div>
 
                 {/* Grounded Citation Chips */}
                 {msg.citations && msg.citations.length > 0 && (

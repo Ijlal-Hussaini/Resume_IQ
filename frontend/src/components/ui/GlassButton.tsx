@@ -25,11 +25,11 @@ export const GlassButton: React.FC<GlassButtonProps> = ({
   };
 
   const variantClasses = {
-    primary: "liquid-btn-primary",
-    secondary: "liquid-btn-secondary",
-    ghost: "bg-transparent hover:bg-white/5 text-slate-300 hover:text-white border border-transparent hover:border-white/10",
-    danger: "bg-red-500/10 hover:bg-red-500/20 text-red-300 border border-red-500/20 hover:border-red-500/40",
-    emerald: "bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 hover:border-emerald-500/50",
+    primary: "liquid-btn-primary font-semibold",
+    secondary: "liquid-btn-secondary font-semibold",
+    ghost: "bg-transparent hover:bg-slate-500/10 dark:hover:bg-white/10 text-slate-800 dark:text-slate-200 hover:text-slate-950 dark:hover:text-white border border-transparent hover:border-slate-300 dark:hover:border-white/10 font-semibold",
+    danger: "bg-red-500/15 hover:bg-red-500/25 text-red-800 dark:text-red-300 border border-red-500/30 font-semibold",
+    emerald: "bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-900 dark:text-emerald-300 border border-emerald-500/30 font-semibold",
   };
 
   return (

@@ -53,15 +53,15 @@ class LLMService:
 
     @property
     def active_provider_name(self) -> str:
-        """Returns the active or preferred provider."""
+        """Returns the active or preferred provider with the actual model name."""
         if settings.PREFERRED_PROVIDER == "groq" and self._groq_client:
-            return "Groq (Llama-3.3-70b)"
+            return f"Groq ({settings.GROQ_MODEL})"
         if settings.PREFERRED_PROVIDER == "gemini" and self._gemini_client:
-            return "Google Gemini (2.0-Flash)"
+            return f"Google Gemini ({settings.GEMINI_MODEL})"
         if self._groq_client:
-            return "Groq (Llama-3.3-70b)"
+            return f"Groq ({settings.GROQ_MODEL})"
         if self._gemini_client:
-            return "Google Gemini (2.0-Flash)"
+            return f"Google Gemini ({settings.GEMINI_MODEL})"
         return "Deterministic Fallback Engine (No API Keys Configured)"
 
     @property
@@ -144,7 +144,7 @@ CRITICAL: Return ONLY a valid, raw JSON object matching this exact schema (no ma
                     messages.append({"role": "system", "content": system_prompt})
                 messages.append({"role": "user", "content": json_prompt})
 
-                raw_res = await asyncio.wait_for(client.ainvoke(messages), timeout=12.0)
+                raw_res = await asyncio.wait_for(client.ainvoke(messages), timeout=15.0)
                 raw_text = raw_res.content if hasattr(raw_res, "content") else str(raw_res)
                 cleaned = raw_text.strip()
                 if "```json" in cleaned:
@@ -170,7 +170,7 @@ CRITICAL: Return ONLY a valid, raw JSON object matching this exact schema (no ma
                         messages.append({"role": "system", "content": system_prompt})
                     messages.append({"role": "user", "content": prompt})
 
-                    result = await asyncio.wait_for(structured_llm.ainvoke(messages), timeout=12.0)
+                    result = await asyncio.wait_for(structured_llm.ainvoke(messages), timeout=15.0)
                     if isinstance(result, schema):
                         return result
                     elif isinstance(result, dict):

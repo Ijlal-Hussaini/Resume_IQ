@@ -50,24 +50,24 @@ export const ExportModal: React.FC<ExportModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl">
       <div className="relative w-full max-w-lg">
-        <GlassCard className="p-6 border-violet-500/30 bg-[#0d0f1a] shadow-[0_25px_60px_rgba(0,0,0,0.8)]">
+        <GlassCard className="p-6 border-violet-500/30 bg-[var(--bg-surface)] shadow-[0_25px_60px_rgba(0,0,0,0.5)]">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-white/[0.08] pb-4 mb-5">
+          <div className="flex items-center justify-between border-b border-[var(--glass-border)] pb-4 mb-5">
             <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-xl bg-violet-500/20 text-violet-400">
+              <div className="p-2 rounded-xl bg-violet-500/20 text-violet-600 dark:text-violet-400">
                 <Download className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-white font-outfit">
+                <h3 className="text-base font-bold text-[var(--card-title)] font-outfit">
                   Export Career Intelligence Report
                 </h3>
-                <p className="text-xs text-slate-400">Download formatted findings & structured data</p>
+                <p className="text-xs text-[var(--card-subtitle)]">Download formatted findings & structured data</p>
               </div>
             </div>
 
             <button
               onClick={onClose}
-              className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors"
+              className="text-[var(--text-muted)] hover:text-[var(--text-primary)] p-1 rounded-lg hover:bg-[var(--pill-bg)] transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -76,12 +76,12 @@ export const ExportModal: React.FC<ExportModalProps> = ({
           {/* Export Options */}
           <div className="space-y-3 mb-6">
             {/* JSON Export */}
-            <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:border-violet-500/30 transition-all flex items-center justify-between">
+            <div className="p-4 rounded-xl bg-[var(--pill-bg)] border border-[var(--glass-border)] hover:border-violet-500/30 transition-all flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <FileJson className="w-5 h-5 text-violet-400" />
+                <FileJson className="w-5 h-5 text-violet-600 dark:text-violet-400" />
                 <div>
-                  <h4 className="text-xs font-bold text-white">Structured JSON Dataset</h4>
-                  <p className="text-[11px] text-slate-400">Complete raw schema with scores, AST, and logs</p>
+                  <h4 className="text-xs font-bold text-[var(--card-title)]">Structured JSON Dataset</h4>
+                  <p className="text-[11px] text-[var(--text-secondary)]">Complete raw schema with scores, AST, and logs</p>
                 </div>
               </div>
               <GlassButton
@@ -95,12 +95,12 @@ export const ExportModal: React.FC<ExportModalProps> = ({
             </div>
 
             {/* Markdown Export */}
-            <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:border-cyan-500/30 transition-all flex items-center justify-between">
+            <div className="p-4 rounded-xl bg-[var(--pill-bg)] border border-[var(--glass-border)] hover:border-cyan-500/30 transition-all flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <FileText className="w-5 h-5 text-cyan-400" />
+                <FileText className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
                 <div>
-                  <h4 className="text-xs font-bold text-white">Markdown Intelligence Report</h4>
-                  <p className="text-[11px] text-slate-400">Ideal for Notion, GitHub, and email briefings</p>
+                  <h4 className="text-xs font-bold text-[var(--card-title)]">Markdown Intelligence Report</h4>
+                  <p className="text-[11px] text-[var(--text-secondary)]">Ideal for Notion, GitHub, and email briefings</p>
                 </div>
               </div>
               <GlassButton
@@ -114,12 +114,12 @@ export const ExportModal: React.FC<ExportModalProps> = ({
             </div>
 
             {/* Styled HTML Report */}
-            <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:border-emerald-500/30 transition-all flex items-center justify-between">
+            <div className="p-4 rounded-xl bg-[var(--pill-bg)] border border-[var(--glass-border)] hover:border-emerald-500/30 transition-all flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <Code2 className="w-5 h-5 text-emerald-400" />
+                <Code2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                 <div>
-                  <h4 className="text-xs font-bold text-white">Formatted Web / PDF Report</h4>
-                  <p className="text-[11px] text-slate-400">Standalone styled HTML with gauges and before/after diffs</p>
+                  <h4 className="text-xs font-bold text-[var(--card-title)]">Formatted Web / PDF Report</h4>
+                  <p className="text-[11px] text-[var(--text-secondary)]">Standalone styled HTML with gauges and before/after diffs</p>
                 </div>
               </div>
               <GlassButton

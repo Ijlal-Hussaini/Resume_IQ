@@ -31,10 +31,21 @@ def build_career_intelligence_graph() -> StateGraph:
     builder.add_node("ats_critique", ats_critique_node)
     builder.add_node("suggestions", suggestions_node)
 
-    # 2. Wire sequential and dependency edges
+    # 2. Wire sequential edges with error short-circuit
     builder.add_edge(START, "extraction")
     builder.add_edge("extraction", "validation")
-    builder.add_edge("validation", "jd_analysis")
+
+    # After validation, check if we have usable data — skip expensive nodes if not
+    def should_continue(state: AgentState) -> str:
+        if state.get("error") or not state.get("resume_data"):
+            return "suggestions"  # Skip to heuristic suggestions
+        return "jd_analysis"
+
+    builder.add_conditional_edges("validation", should_continue, {
+        "jd_analysis": "jd_analysis",
+        "suggestions": "suggestions",
+    })
+
     builder.add_edge("jd_analysis", "matching")
     builder.add_edge("matching", "gap_analysis")
     builder.add_edge("gap_analysis", "ats_critique")

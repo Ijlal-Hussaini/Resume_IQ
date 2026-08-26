@@ -125,7 +125,7 @@ export const PipelineVisualizer: React.FC<PipelineVisualizerProps> = ({
           return (
             <div
               key={step.id}
-              className={`p-3.5 rounded-xl border transition-all duration-300 ${
+              className={`step-connector p-3.5 rounded-xl border transition-all duration-300 ${
                 isCurrent
                   ? "bg-violet-950/40 border-violet-500/60 shadow-[0_0_25px_rgba(139,92,246,0.25)] scale-[1.01]"
                   : isDone

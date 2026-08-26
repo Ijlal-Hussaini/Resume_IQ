@@ -23,11 +23,11 @@ class Settings(BaseSettings):
     
     # LLM Providers
     GROQ_API_KEY: str = ""
-    GROQ_MODEL: str = "openai/gpt-oss-20b"
+    GROQ_MODEL: str = "qwen/qwen3.8-27b"
 
     
     GOOGLE_API_KEY: str = ""
-    GEMINI_MODEL: str = "gemini-2.5-flash"
+    GEMINI_MODEL: str = "gemini-2.0-flash"
 
     
     # Active LLM Provider preference: 'groq' | 'gemini' | 'auto'

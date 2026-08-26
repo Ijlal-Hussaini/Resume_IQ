@@ -1,7 +1,20 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import { UploadCloud, FileText, CheckCircle2, AlertCircle, Sparkles, Cpu, HeartPulse, TrendingUp, ArrowRight } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import {
+  UploadCloud,
+  FileText,
+  CheckCircle2,
+  AlertCircle,
+  Sparkles,
+  Cpu,
+  HeartPulse,
+  TrendingUp,
+  ArrowRight,
+  Loader2,
+  Check,
+  Zap,
+} from "lucide-react";
 import { GlassCard } from "../ui/GlassCard";
 import { GlassButton } from "../ui/GlassButton";
 import { Badge } from "../ui/Badge";
@@ -29,6 +42,12 @@ export const ResumeUploader: React.FC<ResumeUploaderProps> = ({
   const [dragOver, setDragOver] = useState(false);
   const [rawText, setRawText] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  
+  // Progress states
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadStage, setUploadStage] = useState<string>("");
+  const [isUploadingFile, setIsUploadingFile] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleDrag = (e: React.DragEvent) => {
@@ -74,10 +93,41 @@ export const ResumeUploader: React.FC<ResumeUploaderProps> = ({
       return;
     }
 
+    setIsUploadingFile(true);
+    setUploadSuccess(false);
+    setUploadProgress(15);
+    setUploadStage("Uploading document...");
+
+    // Simulated smooth progress interval
+    const progressTimer = setInterval(() => {
+      setUploadProgress((prev) => {
+        if (prev < 45) {
+          setUploadStage("Extracting structured candidate data...");
+          return prev + 12;
+        } else if (prev < 80) {
+          setUploadStage("Parsing skills, experience, and education...");
+          return prev + 8;
+        } else if (prev < 95) {
+          setUploadStage("Indexing section chunks into RAG memory...");
+          return prev + 3;
+        }
+        return prev;
+      });
+    }, 180);
+
     try {
       await onFileSelected(file);
+      clearInterval(progressTimer);
+      setUploadProgress(100);
+      setUploadStage("Upload & parsing complete!");
+      setUploadSuccess(true);
     } catch (err: any) {
+      clearInterval(progressTimer);
+      setIsUploadingFile(false);
+      setUploadProgress(0);
       setErrorMessage(err.message || "Failed to process resume file.");
+    } finally {
+      setIsUploadingFile(false);
     }
   };
 
@@ -104,8 +154,8 @@ export const ResumeUploader: React.FC<ResumeUploaderProps> = ({
               <Sparkles className="w-4 h-4 text-violet-400" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-white dark:text-white light:text-slate-900">Industry Benchmark Profiles</h3>
-              <p className="text-xs text-slate-400 dark:text-slate-400 light:text-slate-600">
+              <h3 className="text-sm font-semibold text-[var(--card-title)]">Industry Benchmark Profiles</h3>
+              <p className="text-xs text-[var(--card-subtitle)]">
                 Explore field-agnostic evaluation across diverse professional sectors:
               </p>
             </div>
@@ -115,13 +165,12 @@ export const ResumeUploader: React.FC<ResumeUploaderProps> = ({
           </Badge>
         </div>
 
-
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {SAMPLE_PROFILES.map((profile) => (
             <button
               key={profile.id}
               onClick={() => onSampleProfileSelected(profile)}
-              disabled={isLoading}
+              disabled={isLoading || isUploadingFile}
               className="glass-panel-interactive p-3.5 text-left flex flex-col justify-between group cursor-pointer border-white/[0.08] hover:border-violet-500/40"
             >
               <div>
@@ -133,13 +182,13 @@ export const ResumeUploader: React.FC<ResumeUploaderProps> = ({
                   {profile.id === "healthcare-nurse" && <HeartPulse className="w-4 h-4 text-emerald-400" />}
                   {profile.id === "growth-marketer" && <TrendingUp className="w-4 h-4 text-amber-400" />}
                 </div>
-                <h4 className="text-sm font-semibold text-white group-hover:text-violet-300 transition-colors">
+                <h4 className="text-sm font-semibold text-[var(--card-title)] group-hover:text-violet-400 transition-colors">
                   {profile.name}
                 </h4>
-                <p className="text-xs text-slate-400 line-clamp-1 mt-0.5">{profile.role}</p>
+                <p className="text-xs text-[var(--card-subtitle)] line-clamp-1 mt-0.5">{profile.role}</p>
               </div>
 
-              <div className="flex items-center justify-between mt-3 pt-2 border-t border-white/[0.06] text-[11px] text-slate-400 group-hover:text-violet-300">
+              <div className="flex items-center justify-between mt-3 pt-2 border-t border-[var(--glass-border)] text-[11px] text-[var(--text-muted)] group-hover:text-violet-400">
                 <span>Load Profile + JD</span>
                 <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
               </div>
@@ -184,7 +233,7 @@ export const ResumeUploader: React.FC<ResumeUploaderProps> = ({
 
         {/* Error Alert */}
         {errorMessage && (
-          <div className="mb-4 p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 flex items-start gap-3 text-xs text-red-300">
+          <div className="mb-4 p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 flex items-start gap-3 text-xs text-red-400">
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-400" />
             <p>{errorMessage}</p>
           </div>
@@ -206,30 +255,67 @@ export const ResumeUploader: React.FC<ResumeUploaderProps> = ({
               onDragEnter={handleDrag}
               onDragLeave={handleDrag}
               onDrop={handleDrop}
-              onClick={() => fileInputRef.current?.click()}
-              className={`relative cursor-pointer rounded-2xl border-2 border-dashed transition-all duration-300 p-8 sm:p-12 text-center flex flex-col items-center justify-center ${
+              onClick={() => !isUploadingFile && fileInputRef.current?.click()}
+              className={`relative cursor-pointer rounded-2xl border-2 border-dashed transition-all duration-300 p-8 sm:p-10 text-center flex flex-col items-center justify-center ${
                 dragOver
                   ? "border-violet-400 bg-violet-500/10 shadow-[0_0_30px_rgba(139,92,246,0.3)]"
+                  : isUploadingFile
+                  ? "border-violet-500/50 bg-violet-950/10 cursor-wait"
                   : "border-[var(--glass-border)] bg-[var(--pill-bg)] hover:border-violet-500/40"
               }`}
             >
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-violet-600/30 to-cyan-500/20 border border-[var(--glass-border)] flex items-center justify-center mb-4 shadow-lg">
-                <UploadCloud className="w-8 h-8 text-violet-400 animate-bounce" />
-              </div>
+              {/* Uploading Progress View */}
+              {isUploadingFile ? (
+                <div className="w-full max-w-md py-4 space-y-4">
+                  <div className="flex items-center justify-center">
+                    <div className="w-14 h-14 rounded-2xl bg-violet-600/20 border border-violet-500/40 flex items-center justify-center shadow-lg shadow-violet-500/20">
+                      <Loader2 className="w-7 h-7 text-violet-400 animate-spin" />
+                    </div>
+                  </div>
 
-              <h3 className="text-base font-semibold text-[var(--card-title)] mb-1">
-                Drop your resume file here, or <span className="text-violet-500 underline font-bold">browse</span>
-              </h3>
-              <p className="text-xs text-[var(--card-subtitle)] max-w-sm mb-4">
-                Supports PDF, DOCX, TXT, or scanned images. Max file size 15MB.
-              </p>
+                  <div>
+                    <div className="flex items-center justify-between text-xs font-semibold text-[var(--text-primary)] mb-2">
+                      <span className="flex items-center gap-1.5 text-violet-400">
+                        <Zap className="w-3.5 h-3.5 animate-pulse" />
+                        {uploadStage}
+                      </span>
+                      <span className="font-mono text-sm font-bold text-violet-400">{uploadProgress}%</span>
+                    </div>
 
-              <div className="flex items-center gap-2 text-[11px] text-[var(--text-muted)]">
-                <span className="px-2 py-0.5 rounded bg-[var(--pill-bg)] border border-[var(--glass-border)] font-mono">PDF</span>
-                <span className="px-2 py-0.5 rounded bg-[var(--pill-bg)] border border-[var(--glass-border)] font-mono">DOCX</span>
-                <span className="px-2 py-0.5 rounded bg-[var(--pill-bg)] border border-[var(--glass-border)] font-mono">TXT</span>
-                <span className="px-2 py-0.5 rounded bg-[var(--pill-bg)] border border-[var(--glass-border)] font-mono">OCR Fallback</span>
-              </div>
+                    {/* Progress Track */}
+                    <div className="w-full h-3 rounded-full bg-[var(--input-bg)] overflow-hidden border border-[var(--glass-border)] p-0.5">
+                      <div
+                        className="h-full rounded-full bg-gradient-to-r from-violet-600 via-indigo-500 to-cyan-400 transition-all duration-300 shadow-[0_0_15px_rgba(139,92,246,0.8)]"
+                        style={{ width: `${uploadProgress}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  <p className="text-[11px] text-[var(--text-muted)]">
+                    Analyzing document structure, extracting career metrics, and indexing embeddings...
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-violet-600/30 to-cyan-500/20 border border-[var(--glass-border)] flex items-center justify-center mb-4 shadow-lg">
+                    <UploadCloud className="w-8 h-8 text-violet-400 animate-bounce" />
+                  </div>
+
+                  <h3 className="text-base font-semibold text-[var(--card-title)] mb-1">
+                    Drop your resume file here, or <span className="text-violet-500 underline font-bold">browse</span>
+                  </h3>
+                  <p className="text-xs text-[var(--card-subtitle)] max-w-sm mb-4">
+                    Supports PDF, DOCX, TXT, or scanned images. Max file size 15MB.
+                  </p>
+
+                  <div className="flex items-center gap-2 text-[11px] text-[var(--text-muted)]">
+                    <span className="px-2 py-0.5 rounded bg-[var(--pill-bg)] border border-[var(--glass-border)] font-mono">PDF</span>
+                    <span className="px-2 py-0.5 rounded bg-[var(--pill-bg)] border border-[var(--glass-border)] font-mono">DOCX</span>
+                    <span className="px-2 py-0.5 rounded bg-[var(--pill-bg)] border border-[var(--glass-border)] font-mono">TXT</span>
+                    <span className="px-2 py-0.5 rounded bg-[var(--pill-bg)] border border-[var(--glass-border)] font-mono">OCR Fallback</span>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         ) : (
@@ -239,10 +325,10 @@ export const ResumeUploader: React.FC<ResumeUploaderProps> = ({
               onChange={(e) => setRawText(e.target.value)}
               placeholder="Paste raw resume text here (Contact info, work experience bullets, skills, education)..."
               rows={8}
-              className="glass-input w-full p-4 text-xs sm:text-sm font-mono leading-relaxed resize-y"
+              className="glass-input w-full p-4 text-xs sm:text-sm font-mono leading-relaxed resize-y mb-3"
             />
             <div className="flex justify-between items-center">
-              <span className="text-xs text-slate-400">
+              <span className="text-xs text-[var(--text-muted)]">
                 {rawText.length} characters
               </span>
               <GlassButton
@@ -258,24 +344,30 @@ export const ResumeUploader: React.FC<ResumeUploaderProps> = ({
           </div>
         )}
 
-        {/* Parsed Profile Preview summary if available */}
+        {/* Successful Ingestion & Profile Preview Card */}
         {parsedResume && (
-          <div className="mt-5 pt-4 border-t border-white/[0.08] flex items-center justify-between">
+          <div className="mt-5 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in slide-in-from-bottom-2 duration-300">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-xs font-bold text-emerald-300">
-                {parsedResume.contact_info.full_name ? parsedResume.contact_info.full_name.charAt(0) : "C"}
+              <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-sm font-bold text-emerald-400 shrink-0">
+                <CheckCircle2 className="w-5 h-5 text-emerald-400" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-white">
-                  {parsedResume.contact_info.full_name || "Extracted Candidate Profile"}
-                </p>
-                <p className="text-[11px] text-slate-400">
-                  Domain: <span className="text-violet-300">{parsedResume.domain_industry}</span> • {parsedResume.work_experience.length} Roles • {parsedResume.all_skills_flat.length} Skills
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-bold text-[var(--text-primary)]">
+                    {parsedResume.contact_info.full_name || "Candidate Profile"}
+                  </p>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-violet-500/15 text-violet-400 border border-violet-500/30">
+                    {parsedResume.domain_industry}
+                  </span>
+                </div>
+                <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+                  <span className="font-semibold text-emerald-400">100% Ingested:</span> {parsedResume.work_experience?.length || 0} Work Roles • {parsedResume.all_skills_flat?.length || 0} Skills Extracted • {parsedResume.education?.length || 0} Degrees
                 </p>
               </div>
             </div>
-            <Badge variant="emerald" size="sm">
-              Extracted & Vectorized
+
+            <Badge variant="emerald" size="md">
+              ✓ Ready for Analysis
             </Badge>
           </div>
         )}

@@ -26,6 +26,12 @@ class AnalyzeJobRequest(BaseModel):
     job_description: JobDescriptionInput
 
 
+class GenerateJDRequest(BaseModel):
+    job_title: str
+    company_name: Optional[str] = None
+
+
+
 class ExportReportRequest(BaseModel):
     format: str = Field(default="json", description="'json' | 'pdf' | 'markdown'")
     resume_data: ResumeData

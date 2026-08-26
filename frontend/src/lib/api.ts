@@ -106,6 +106,29 @@ export class ApiService {
     return json.data;
   }
 
+  /** Auto-generate / synthesize Job Description from Role Title & Company */
+  static async generateJobDescription(
+    jobTitle: string,
+    companyName?: string
+  ): Promise<{ job_title: string; company_name: string; raw_text: string }> {
+    const res = await fetch(`${API_BASE_URL}/analyze/generate-jd`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        job_title: jobTitle,
+        company_name: companyName || "",
+      }),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || "Failed to generate job description.");
+    }
+
+    const json = await res.json();
+    return json.data;
+  }
+
   /** Grounded RAG Chat with Resume */
   static async chatWithResume(
     query: string,

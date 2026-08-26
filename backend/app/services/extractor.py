@@ -174,23 +174,66 @@ class ResumeExtractorService:
                     skills=flat_skills[12:24]
                 ))
 
-        # Domain heuristic detection
+        # Weighted Domain Detection with Word Boundary Regex
         lower_raw = raw_text.lower()
-        domain = "General"
-        if any(w in lower_raw for w in ["patient", "nurse", "clinical", "hospital", "physician", "ehr", "triage", "medical"]):
-            domain = "Healthcare & Nursing"
-        elif any(w in lower_raw for w in ["react", "python", "aws", "docker", "kubernetes", "backend", "frontend", "software", "api", "database"]):
-            domain = "Software & AI Engineering"
-        elif any(w in lower_raw for w in ["seo", "campaign", "cac", "roas", "content", "growth", "brand", "marketing", "funnel"]):
-            domain = "Growth & Marketing"
-        elif any(w in lower_raw for w in ["accounting", "audit", "gaap", "financial modeling", "portfolio", "banking", "tax"]):
-            domain = "Finance & Accounting"
+        domain_weights = {
+            "Software & AI Engineering": 0,
+            "Healthcare & Clinical Practice": 0,
+            "Growth & Digital Marketing": 0,
+            "Finance & Accounting": 0,
+            "Operations & Management": 0
+        }
+
+        # Software / IT Keywords
+        sw_keywords = [
+            r"\bpython\b", r"\breact\b", r"\bjavascript\b", r"\btypescript\b", r"\bsoftware\b",
+            r"\bdeveloper\b", r"\bengineer\b", r"\bengineering\b", r"\bfull-stack\b", r"\bbackend\b",
+            r"\bfrontend\b", r"\bfastapi\b", r"\bnext\.js\b", r"\bnode\b", r"\bdocker\b", r"\bkubernetes\b",
+            r"\bapi\b", r"\bapis\b", r"\bdatabase\b", r"\bsql\b", r"\bpostgres\b", r"\bpostgresql\b",
+            r"\bgithub\b", r"\bgit\b", r"\bhtml\b", r"\bcss\b", r"\bmachine learning\b", r"\bai\b",
+            r"\bllm\b", r"\brag\b", r"\bdata scientist\b", r"\bdevops\b", r"\bci/cd\b", r"\bcloud\b", r"\baws\b"
+        ]
+        for pat in sw_keywords:
+            if re.search(pat, lower_raw):
+                domain_weights["Software & AI Engineering"] += 2
+
+        # Healthcare Keywords
+        health_keywords = [
+            r"\bpatient\b", r"\bpatients\b", r"\bnurse\b", r"\bnursing\b", r"\bclinical\b", r"\bhospital\b",
+            r"\bphysician\b", r"\bdoctor\b", r"\btriage\b", r"\bmbbs\b", r"\bbsn\b", r"\brn\b",
+            r"\bacls\b", r"\bbls\b", r"\bicu\b", r"\bed\b", r"\bmedication\b", r"\bsurgical\b"
+        ]
+        for pat in health_keywords:
+            if re.search(pat, lower_raw):
+                domain_weights["Healthcare & Clinical Practice"] += 2
+
+        # Marketing Keywords
+        mkt_keywords = [
+            r"\bseo\b", r"\bsem\b", r"\bcampaign\b", r"\bcac\b", r"\broas\b", r"\bcontent marketing\b",
+            r"\bgrowth hacking\b", r"\bbrand strategy\b", r"\bfunnel\b", r"\bmeta ads\b", r"\bgoogle ads\b"
+        ]
+        for pat in mkt_keywords:
+            if re.search(pat, lower_raw):
+                domain_weights["Growth & Digital Marketing"] += 2
+
+        # Finance Keywords
+        fin_keywords = [
+            r"\baccounting\b", r"\baudit\b", r"\bgaap\b", r"\bfinancial modeling\b", r"\btaxation\b",
+            r"\bbalance sheet\b", r"\bcpa\b", r"\bcfa\b", r"\bgeneral ledger\b"
+        ]
+        for pat in fin_keywords:
+            if re.search(pat, lower_raw):
+                domain_weights["Finance & Accounting"] += 2
+
+        # Select highest weighted domain
+        best_domain = max(domain_weights, key=domain_weights.get)
+        domain = best_domain if domain_weights[best_domain] > 0 else "General Professional"
 
         return ResumeData(
             contact_info=contact,
             professional_summary=" ".join(sections["summary"][:3]) if sections["summary"] else "Accomplished professional with proven track record of domain excellence.",
             domain_industry=domain,
-            estimated_years_experience=len(work_exps) * 2.5 if work_exps else 3.0,
+            estimated_years_experience=max(1.0, len(work_exps) * 1.5) if work_exps else 2.0,
             work_experience=work_exps,
             education=educations,
             skill_categories=skill_cats,
@@ -200,3 +243,4 @@ class ResumeExtractorService:
 
 
 resume_extractor = ResumeExtractorService()
+

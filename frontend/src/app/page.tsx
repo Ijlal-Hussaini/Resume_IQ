@@ -99,17 +99,27 @@ export default function Home() {
   const handleRunAnalysis = async () => {
     if (!parsedResume) return;
 
+    setIsAnalyzing(true);
+    setPipelineLogs([]);
+
     let effectiveJD = { ...jobDescription };
-    if (!effectiveJD.raw_text || effectiveJD.raw_text.trim().length < 5) {
+    if (!effectiveJD.raw_text || effectiveJD.raw_text.trim().length < 15) {
       if (effectiveJD.job_title) {
-        effectiveJD.raw_text = `Role Title: ${effectiveJD.job_title}${effectiveJD.company_name ? ` at ${effectiveJD.company_name}` : ""}\nSeeking qualified candidates for ${effectiveJD.job_title} position. Key duties include domain execution, technical deliverables, and cross-functional collaboration.`;
+        try {
+          const genRes = await ApiService.generateJobDescription(
+            effectiveJD.job_title,
+            effectiveJD.company_name || undefined
+          );
+          effectiveJD.raw_text = genRes.raw_text;
+          setJobDescription(effectiveJD);
+        } catch {
+          effectiveJD.raw_text = `Target Role: ${effectiveJD.job_title}${effectiveJD.company_name ? ` at ${effectiveJD.company_name}` : ""}\nSeeking candidates with expertise in ${effectiveJD.job_title} duties, technical execution, and industry competencies.`;
+        }
       } else {
-        effectiveJD.raw_text = "General domain position and professional competency assessment.";
+        effectiveJD.raw_text = "General professional role and core competency evaluation.";
       }
     }
 
-    setIsAnalyzing(true);
-    setPipelineLogs([]);
 
     try {
       const result = await ApiService.analyzeJob(

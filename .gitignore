@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+.pytest_cache/
+*.sqlite3
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+build/
+.DS_Store
+*.log
+
+# IDE
+.vscode/
+.idea/

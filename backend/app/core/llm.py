@@ -87,10 +87,11 @@ class LLMService:
 
     async def invoke(self, prompt: str, system_prompt: Optional[str] = None) -> str:
         """Execute LLM invocation with automatic multi-provider fallback."""
+        from langchain_core.messages import SystemMessage, HumanMessage
         messages = []
         if system_prompt:
-            messages.append({"role": "system", "content": system_prompt})
-        messages.append({"role": "user", "content": prompt})
+            messages.append(SystemMessage(content=system_prompt))
+        messages.append(HumanMessage(content=prompt))
 
         # Try Primary LLM
         primary = self.get_llm()
@@ -124,6 +125,7 @@ class LLMService:
         Extracts structured Pydantic object with dual-provider LLM fallback
         (Primary -> Secondary -> Heuristic recovery).
         """
+        from langchain_core.messages import SystemMessage, HumanMessage
         clients_to_try = []
         primary = self.get_llm()
         if primary:
@@ -141,8 +143,8 @@ CRITICAL: Return ONLY a valid, raw JSON object matching this exact schema (no ma
 {json.dumps(schema.model_json_schema())}"""
                 messages = []
                 if system_prompt:
-                    messages.append({"role": "system", "content": system_prompt})
-                messages.append({"role": "user", "content": json_prompt})
+                    messages.append(SystemMessage(content=system_prompt))
+                messages.append(HumanMessage(content=json_prompt))
 
                 raw_res = await asyncio.wait_for(client.ainvoke(messages), timeout=15.0)
                 raw_text = raw_res.content if hasattr(raw_res, "content") else str(raw_res)
@@ -167,8 +169,8 @@ CRITICAL: Return ONLY a valid, raw JSON object matching this exact schema (no ma
                     structured_llm = client.with_structured_output(schema)
                     messages = []
                     if system_prompt:
-                        messages.append({"role": "system", "content": system_prompt})
-                    messages.append({"role": "user", "content": prompt})
+                        messages.append(SystemMessage(content=system_prompt))
+                    messages.append(HumanMessage(content=prompt))
 
                     result = await asyncio.wait_for(structured_llm.ainvoke(messages), timeout=15.0)
                     if isinstance(result, schema):

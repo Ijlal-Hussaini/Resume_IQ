@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { Sparkles, Bot, Code2, FileText, RefreshCw, Cpu, Layers } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Sparkles, Code2, FileText, RefreshCw, Cpu, Layers, Sun, Moon } from "lucide-react";
 import { GlassButton } from "../ui/GlassButton";
 import { Badge } from "../ui/Badge";
 import { HealthInfo } from "@/lib/types";
@@ -19,14 +19,35 @@ export const Header: React.FC<HeaderProps> = ({
   hasActiveSession,
   onOpenArchitecture,
 }) => {
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("resumeiq-theme") as "dark" | "light" | null;
+    if (saved) {
+      setTheme(saved);
+      document.documentElement.classList.toggle("dark", saved === "dark");
+      document.documentElement.classList.toggle("light", saved === "light");
+    } else {
+      document.documentElement.classList.add("dark");
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+    localStorage.setItem("resumeiq-theme", newTheme);
+    document.documentElement.classList.toggle("dark", newTheme === "dark");
+    document.documentElement.classList.toggle("light", newTheme === "light");
+  };
+
   return (
-    <header className="sticky top-0 z-50 border-b border-white/[0.08] bg-[#07080d]/80 backdrop-blur-2xl px-4 sm:px-8 py-3.5 transition-all">
+    <header className="sticky top-0 z-50 border-b border-white/[0.08] dark:border-white/[0.08] light:border-slate-200/80 bg-[#07080d]/80 dark:bg-[#07080d]/80 light:bg-white/80 backdrop-blur-2xl px-4 sm:px-8 py-3.5 transition-all">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Brand Logo & Tagline */}
         <div className="flex items-center gap-3.5">
           <div className="relative group cursor-pointer" onClick={onReset}>
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-violet-600 via-purple-600 to-cyan-500 p-[1px] shadow-[0_0_20px_rgba(139,92,246,0.4)] transition-transform duration-300 group-hover:scale-105">
-              <div className="w-full h-full bg-[#0d0f1a] rounded-2xl flex items-center justify-center">
+              <div className="w-full h-full bg-[#0d0f1a] dark:bg-[#0d0f1a] light:bg-white rounded-2xl flex items-center justify-center">
                 <Sparkles className="w-5 h-5 text-violet-400 animate-pulse" />
               </div>
             </div>
@@ -35,14 +56,14 @@ export const Header: React.FC<HeaderProps> = ({
 
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold tracking-tight text-white font-outfit">
+              <h1 className="text-xl font-bold tracking-tight text-white dark:text-white light:text-slate-900 font-outfit">
                 Resume<span className="text-gradient-accent font-extrabold">IQ</span>
               </h1>
               <Badge variant="violet" size="sm">
-                v1.0 Agentic
+                Production AI
               </Badge>
             </div>
-            <p className="text-xs text-slate-400 hidden sm:block">
+            <p className="text-xs text-slate-400 dark:text-slate-400 light:text-slate-600 hidden sm:block">
               AI Career Intelligence & Field-Agnostic CV Parser
             </p>
           </div>
@@ -51,13 +72,24 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Status Indicators & Navigation Actions */}
         <div className="flex items-center gap-2.5 sm:gap-3">
           {/* Provider Pill */}
-          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-slate-300">
+          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] dark:bg-white/[0.04] light:bg-slate-100 border border-white/[0.08] dark:border-white/[0.08] light:border-slate-200 text-xs text-slate-300 dark:text-slate-300 light:text-slate-700">
             <Cpu className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="text-slate-400">LLM Core:</span>
-            <span className="text-slate-200 font-medium truncate max-w-[140px]">
-              {healthInfo?.active_llm_provider || "Groq Llama-3.3-70b"}
+            <span className="text-slate-400 dark:text-slate-400 light:text-slate-500">LLM Core:</span>
+            <span className="font-medium truncate max-w-[140px]">
+              {healthInfo?.active_llm_provider || "Google Gemini 2.5"}
             </span>
           </div>
+
+          {/* Theme Toggle Button */}
+          <GlassButton
+            variant="ghost"
+            size="sm"
+            onClick={toggleTheme}
+            icon={theme === "dark" ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-violet-600" />}
+            title="Toggle Light/Dark Theme"
+          >
+            <span className="hidden sm:inline">{theme === "dark" ? "Light" : "Dark"}</span>
+          </GlassButton>
 
           {/* Architecture Graph Modal Trigger */}
           {onOpenArchitecture && (
@@ -113,7 +145,6 @@ export const Header: React.FC<HeaderProps> = ({
               icon={<Code2 className="w-4 h-4 text-slate-300" />}
             >
               <span className="hidden sm:inline">GitHub</span>
-
             </GlassButton>
           </a>
         </div>

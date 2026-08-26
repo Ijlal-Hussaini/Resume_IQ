@@ -97,7 +97,16 @@ export default function Home() {
 
   // Run LangGraph Agent Pipeline Handler
   const handleRunAnalysis = async () => {
-    if (!parsedResume || !jobDescription.raw_text) return;
+    if (!parsedResume) return;
+
+    let effectiveJD = { ...jobDescription };
+    if (!effectiveJD.raw_text || effectiveJD.raw_text.trim().length < 5) {
+      if (effectiveJD.job_title) {
+        effectiveJD.raw_text = `Role Title: ${effectiveJD.job_title}${effectiveJD.company_name ? ` at ${effectiveJD.company_name}` : ""}\nSeeking qualified candidates for ${effectiveJD.job_title} position. Key duties include domain execution, technical deliverables, and cross-functional collaboration.`;
+      } else {
+        effectiveJD.raw_text = "General domain position and professional competency assessment.";
+      }
+    }
 
     setIsAnalyzing(true);
     setPipelineLogs([]);
@@ -107,8 +116,9 @@ export default function Home() {
         sessionId,
         parsedResume,
         rawResumeText,
-        jobDescription
+        effectiveJD
       );
+
 
       // Trigger Confetti on high match score
       if (result.match_scores.overall_score >= 70) {
@@ -222,7 +232,8 @@ export default function Home() {
                 onChange={setJobDescription}
                 onRunAnalysis={handleRunAnalysis}
                 isLoading={isAnalyzing}
-                canRun={Boolean(parsedResume && jobDescription.raw_text.length >= 20)}
+                canRun={Boolean(parsedResume && (jobDescription.raw_text.trim().length >= 10 || (jobDescription.job_title && jobDescription.job_title.trim().length >= 2)))}
+
               />
             </div>
           </div>
@@ -246,12 +257,13 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-white/[0.08] bg-[#05060a]/90 backdrop-blur-2xl py-8 px-4 sm:px-8 mt-12 text-center text-xs text-slate-400">
+      <footer className="border-t border-white/[0.08] dark:border-white/[0.08] light:border-slate-200 bg-[#05060a]/90 dark:bg-[#05060a]/90 light:bg-slate-50/90 backdrop-blur-2xl py-8 px-4 sm:px-8 mt-12 text-center text-xs text-slate-400 dark:text-slate-400 light:text-slate-600">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-white font-outfit">ResumeIQ</span>
-            <span>• Built for AI/ML Engineer Portfolio</span>
+            <span className="font-bold text-white dark:text-white light:text-slate-900 font-outfit">ResumeIQ</span>
+            <span>• AI Career Intelligence Platform © 2026. All rights reserved.</span>
           </div>
+
 
           <div className="flex items-center gap-4 text-slate-400">
             <button

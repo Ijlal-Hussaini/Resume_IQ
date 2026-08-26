@@ -101,9 +101,10 @@ export const JobDescriptionInputComponent: React.FC<JobDescriptionInputComponent
         <div className="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <p className="text-[11px] text-slate-400">
             {canRun
-              ? "✓ Resume loaded & JD ready. Ready to launch multi-agent pipeline."
-              : "⚠️ Upload a resume above and input a job description to execute pipeline."}
+              ? "✓ Ready to launch multi-agent LangGraph analysis."
+              : "⚠️ Enter a job title or paste the job description to run analysis."}
           </p>
+
 
           <GlassButton
             variant="primary"

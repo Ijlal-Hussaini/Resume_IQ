@@ -35,8 +35,9 @@ export const metadata: Metadata = {
     "Next.js",
     "FastAPI"
   ],
-  authors: [{ name: "AI Engineer Portfolio" }],
+  authors: [{ name: "ResumeIQ Intelligence" }],
 };
+
 
 
 export default function RootLayout({

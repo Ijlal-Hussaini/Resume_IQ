@@ -104,16 +104,17 @@ export const ResumeUploader: React.FC<ResumeUploaderProps> = ({
               <Sparkles className="w-4 h-4 text-violet-400" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-white">Instant 1-Click Evaluation Presets</h3>
-              <p className="text-xs text-slate-400">
-                Test field-agnostic parsing across completely different industries:
+              <h3 className="text-sm font-semibold text-white dark:text-white light:text-slate-900">Industry Benchmark Profiles</h3>
+              <p className="text-xs text-slate-400 dark:text-slate-400 light:text-slate-600">
+                Explore field-agnostic evaluation across diverse professional sectors:
               </p>
             </div>
           </div>
           <Badge variant="cyan" size="sm">
-            Zero-Friction Demo
+            Quick Benchmarks
           </Badge>
         </div>
+
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {SAMPLE_PROFILES.map((profile) => (

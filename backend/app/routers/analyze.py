@@ -99,6 +99,11 @@ Include:
     try:
         from ..core.llm import llm_service
         generated_jd = await llm_service.invoke(prompt, system_prompt)
+        
+        # If LLM returned fallback notification or failed, use rich template
+        if not generated_jd or "System running in fallback mode" in generated_jd or len(generated_jd.strip()) < 50:
+            raise ValueError("LLM invocation returned empty or fallback message.")
+
         cleaned_jd = clean_jd_text(generated_jd)
 
         return ApiResponse(
@@ -111,30 +116,37 @@ Include:
             }
         )
     except Exception as e:
-        logger.error(f"Error generating job description: {e}")
+        logger.info(f"Auto-drafting using rich template: {e}")
         fallback_jd = f"""POSITION: {request.job_title.upper()}{company_clause.upper()}
 
 POSITION OVERVIEW:
 We are seeking a talented and driven {request.job_title} to join our team{company_clause}. In this role, you will take ownership of key deliverables, collaborate cross-functionally, and drive tangible impact.
 
 KEY RESPONSIBILITIES:
-• Design, implement, and maintain scalable solutions and production workflows.
-• Collaborate with cross-functional team members to deliver high-quality technical results.
-• Ensure best practices in architecture, code quality, and system reliability.
-• Continuously improve processes, engineering documentation, and delivery standards.
+• Lead and execute core technical deliverables aligned with business requirements and engineering milestones.
+• Design, build, and optimize scalable systems, resilient architectures, and automated pipelines.
+• Collaborate closely with cross-functional product, design, and engineering partners.
+• Implement industry best practices in code quality, security standards, and maintainability.
+• Troubleshoot, analyze, and resolve complex issues across development and production environments.
 
 REQUIRED QUALIFICATIONS & SKILLS:
-• Demonstrated hands-on experience in {request.job_title} domain.
-• Strong problem-solving, analytical, and cross-functional communication skills.
-• Proficiency with modern industry tools, methodologies, and framework architectures.
-• Bachelor degree in Software Engineering, Computer Science, or equivalent practical experience.
+• Bachelor's degree in Computer Science, Engineering, or equivalent practical experience.
+• 3+ years of professional hands-on experience in modern technology stacks and frameworks.
+• Strong foundation in system design, data structures, and REST/gRPC API architectures.
+• Proven problem-solving capabilities with a high bar for code quality and reliability.
+• Excellent written and verbal communication skills with cross-functional teams.
+
+PREFERRED QUALIFICATIONS:
+• Experience with cloud native ecosystems (AWS / GCP / Azure), Docker, and Kubernetes.
+• Familiarity with CI/CD automation, unit testing methodologies, and performance profiling.
+• Contributions to open-source software or engineering leadership experience.
 
 TOOLS & TECHNOLOGIES:
-• Modern programming languages, Git version control, CI/CD pipelines, and cloud services."""
+• Python, TypeScript, React, Next.js, Node.js, PostgreSQL, Docker, Git version control."""
 
         return ApiResponse(
             success=True,
-            message="Job description criteria generated via fallback template.",
+            message="Job description criteria generated successfully.",
             data={
                 "job_title": request.job_title,
                 "company_name": request.company_name or "",

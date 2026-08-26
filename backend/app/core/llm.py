@@ -31,7 +31,7 @@ class LLMService:
                     temperature=0.1,
                     max_tokens=4096,
                     max_retries=1,
-                    timeout=8.0,
+                    timeout=25.0,
                 )
 
                 logger.info(f"Initialized Groq LLM client ({settings.GROQ_MODEL})")

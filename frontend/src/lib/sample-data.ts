@@ -15,65 +15,65 @@ export interface SampleProfile {
 export const SAMPLE_PROFILES: SampleProfile[] = [
   {
     id: "ai-engineer",
-    name: "Alex Chen",
-    role: "Senior AI / Full-Stack Systems Engineer",
-    industry: "AI & Distributed Systems",
+    name: "Ali Tariq",
+    role: "Lead AI & Full-Stack Systems Engineer",
+    industry: "AI & Enterprise Systems",
     badge: "Tech / AI Engineering",
     icon: "Cpu",
     resumeData: {
       contact_info: {
-        full_name: "Alex Chen",
-        email: "alex.chen@ai-systems.dev",
-        phone: "+1 (415) 555-0142",
-        location: "San Francisco, CA (Open to Remote)",
-        linkedin: "https://linkedin.com/in/alexchen-ai",
-        github: "https://github.com/alexchen-ai",
-        portfolio_website: "https://alexchen.dev",
-        professional_title: "Senior AI & Distributed Systems Engineer"
+        full_name: "Ali Tariq",
+        email: "ali.tariq@systems.com",
+        phone: "+92 300 5550192",
+        location: "Lahore, Pakistan (Open to Hybrid / Remote)",
+        linkedin: "https://linkedin.com/in/alitariq-ai",
+        github: "https://github.com/alitariq-ai",
+        portfolio_website: "https://alitariq.dev",
+        professional_title: "Lead AI & Distributed Systems Engineer"
       },
-      professional_summary: "Senior AI/ML Systems Engineer with 6+ years of experience architecting low-latency LLM agent workflows, high-throughput RAG retrieval pipelines, and distributed Kubernetes microservices. Experienced in production fine-tuning, vector database optimization (Chroma, Pinecone), and async FastAPI backend development.",
+      professional_summary: "Senior AI/ML Systems Engineer with 6+ years of experience architecting low-latency LLM agent workflows, high-throughput RAG retrieval pipelines, and distributed microservices across Systems Limited and 10Pearls. Experienced in LangGraph orchestration, vector database optimization (Chroma, Qdrant), and asynchronous FastAPI backends.",
       domain_industry: "Artificial Intelligence & Distributed Systems",
       estimated_years_experience: 6.5,
       work_experience: [
         {
-          job_title: "Staff AI Application Engineer",
-          company: "NexusAI Labs",
-          location: "San Francisco, CA",
-          start_date: "2023",
+          job_title: "Lead AI Systems Architect",
+          company: "Systems Limited",
+          location: "Lahore, Pakistan",
+          start_date: "2022",
           end_date: "Present",
           is_current: true,
           description_bullets: [
-            "Architected multi-agent LangGraph workflow orchestration engine processing 1.4M daily enterprise queries with 99.95% uptime.",
-            "Engineered hybrid sparse/dense vector search using local Sentence-Transformers and Qdrant, improving retrieval recall @10 by 34%.",
-            "Implemented streaming LLM token generation middleware with token-bucket rate limiting and async Redis caching, dropping p99 response time from 3.2s to 420ms.",
-            "Mentored 8 engineers across prompt engineering best practices, evaluation benchmarks, and LangSmith observability integration."
+            "Architected enterprise multi-agent LangGraph workflow orchestration engine processing 1.2M daily transactions for international clients with 99.95% uptime.",
+            "Engineered hybrid sparse/dense vector search using Sentence-Transformers and Qdrant, improving retrieval recall @10 by 36% across 500k technical documents.",
+            "Implemented streaming LLM token generation middleware with token-bucket rate limiting and async Redis caching, dropping p99 response latency from 3.4s to 410ms.",
+            "Mentored team of 10 software engineers across prompt engineering best practices, evaluation benchmarks, and LangSmith observability integration."
           ],
-          tools_and_methods: ["LangGraph", "Python", "FastAPI", "ChromaDB", "Groq API", "Docker", "Redis", "TypeScript"],
-          quantified_impact: ["1.4M daily queries", "99.95% uptime", "34% recall improvement", "420ms p99 latency"]
+          tools_and_methods: ["LangGraph", "Python", "FastAPI", "Qdrant", "Groq API", "Docker", "Redis", "TypeScript"],
+          quantified_impact: ["1.2M daily transactions", "99.95% uptime", "36% recall improvement", "410ms p99 latency"]
         },
         {
           job_title: "Senior Backend & ML Engineer",
-          company: "Stripe / HyperScale",
-          location: "San Francisco, CA",
-          start_date: "2020",
-          end_date: "2023",
+          company: "10Pearls",
+          location: "Islamabad, Pakistan",
+          start_date: "2019",
+          end_date: "2022",
           is_current: false,
           description_bullets: [
-            "Designed high-throughput webhook ingest engine handling 25,000 requests/sec with zero packet loss during peak transaction periods.",
-            "Deployed production PyTorch anomaly detection model into asynchronous Celery/FastAPI pipeline, preventing $4.2M in fraudulent chargebacks.",
-            "Spearheaded database partitioning and read-replica routing in PostgreSQL, lowering query contention by 48%."
+            "Designed high-throughput payment webhook ingest engine handling 20,000 requests/sec with zero packet loss during peak campaign periods.",
+            "Deployed production PyTorch anomaly detection model into asynchronous Celery/FastAPI pipeline, preventing PKR 85M in fraudulent transactions.",
+            "Spearheaded database partitioning and read-replica routing in PostgreSQL, lowering query contention by 45%."
           ],
           tools_and_methods: ["Python", "PostgreSQL", "FastAPI", "PyTorch", "Kubernetes", "Kafka", "AWS"],
-          quantified_impact: ["25,000 req/sec", "$4.2M fraud savings", "48% contention reduction"]
+          quantified_impact: ["20,000 req/sec", "PKR 85M fraud savings", "45% contention reduction"]
         }
       ],
       education: [
         {
-          degree: "B.S. in Computer Science & Applied Mathematics",
-          institution: "University of California, Berkeley",
-          location: "Berkeley, CA",
-          graduation_year: "2020",
-          gpa_or_honors: "3.91 GPA, Honors Thesis"
+          degree: "B.S. in Computer Science",
+          institution: "FAST-NUCES (National University of Computer and Emerging Sciences)",
+          location: "Islamabad, Pakistan",
+          graduation_year: "2019",
+          gpa_or_honors: "3.84 CGPA, Dean's Honor Roll"
         }
       ],
       skill_categories: [
@@ -96,357 +96,329 @@ export const SAMPLE_PROFILES: SampleProfile[] = [
       projects: [
         {
           title: "Autonomous RAG Synthesizer",
-          description: "Multi-agent research engine that aggregates live financial filings, computes grounded similarity, and streams cited reports.",
+          description: "Multi-agent research engine that aggregates financial documents, computes grounded similarity, and streams cited reports.",
           role: "Creator & Lead Architect",
-          tools_technologies: ["LangGraph", "FastAPI", "Next.js", "ChromaDB"],
-          url: "https://github.com/alexchen-ai/rag-synthesizer"
+          tools_technologies: ["LangGraph", "FastAPI", "Next.js 15", "Qdrant", "Tailwind CSS"],
+          url: "https://github.com/alitariq-ai/rag-synthesizer"
+
         }
       ],
       certifications: [
         {
-          name: "AWS Certified Solutions Architect - Professional",
+          name: "AWS Certified Solutions Architect – Associate",
           issuing_organization: "Amazon Web Services",
           issue_date: "2023"
         }
       ],
-      languages: ["English (Native)", "Mandarin (Professional)"]
-    },
-    rawResumeText: `Alex Chen
-Email: alex.chen@ai-systems.dev | Phone: +1 (415) 555-0142 | San Francisco, CA
-GitHub: github.com/alexchen-ai | Portfolio: alexchen.dev
+      languages: ["English (Fluent / Professional)", "Urdu (Native)"],
+      raw_text: `Ali Tariq
+Email: ali.tariq@systems.com | Phone: +92 300 5550192 | Lahore, Pakistan
+LinkedIn: linkedin.com/in/alitariq-ai | GitHub: github.com/alitariq-ai
 
 Professional Summary:
-Senior AI/ML Systems Engineer with 6+ years of experience architecting low-latency LLM agent workflows, high-throughput RAG retrieval pipelines, and distributed Kubernetes microservices.
+Senior AI/ML Systems Engineer with 6+ years of experience architecting low-latency LLM agent workflows, high-throughput RAG retrieval pipelines, and distributed microservices across Systems Limited and 10Pearls. Experienced in LangGraph orchestration, vector database optimization (Chroma, Qdrant), and asynchronous FastAPI backends.
 
 Work Experience:
-NexusAI Labs — Staff AI Application Engineer (2023 - Present)
-* Architected multi-agent LangGraph workflow orchestration engine processing 1.4M daily enterprise queries with 99.95% uptime.
-* Engineered hybrid sparse/dense vector search using local Sentence-Transformers and Qdrant, improving retrieval recall @10 by 34%.
-* Implemented streaming LLM token generation middleware with token-bucket rate limiting and async Redis caching, dropping p99 response time from 3.2s to 420ms.
-* Mentored 8 engineers across prompt engineering best practices, evaluation benchmarks, and LangSmith observability.
+Lead AI Systems Architect — Systems Limited (2022 - Present) | Lahore, Pakistan
+* Architected enterprise multi-agent LangGraph workflow orchestration engine processing 1.2M daily transactions for international clients with 99.95% uptime.
+* Engineered hybrid sparse/dense vector search using Sentence-Transformers and Qdrant, improving retrieval recall @10 by 36% across 500k technical documents.
+* Implemented streaming LLM token generation middleware with token-bucket rate limiting and async Redis caching, dropping p99 response latency from 3.4s to 410ms.
+* Mentored team of 10 software engineers across prompt engineering best practices, evaluation benchmarks, and LangSmith observability integration.
 
-Stripe / HyperScale — Senior Backend & ML Engineer (2020 - 2023)
-* Designed high-throughput webhook ingest engine handling 25,000 requests/sec with zero packet loss during peak transaction periods.
-* Deployed production PyTorch anomaly detection model into asynchronous Celery/FastAPI pipeline, preventing $4.2M in fraudulent chargebacks.
-* Spearheaded database partitioning and read-replica routing in PostgreSQL, lowering query contention by 48%.
+Senior Backend & ML Engineer — 10Pearls (2019 - 2022) | Islamabad, Pakistan
+* Designed high-throughput payment webhook ingest engine handling 20,000 requests/sec with zero packet loss during peak campaign periods.
+* Deployed production PyTorch anomaly detection model into asynchronous Celery/FastAPI pipeline, preventing PKR 85M in fraudulent transactions.
+* Spearheaded database partitioning and read-replica routing in PostgreSQL, lowering query contention by 45%.
 
 Education:
-B.S. in Computer Science & Applied Mathematics — UC Berkeley (2020) | 3.91 GPA
+Bachelor of Science in Computer Science (BSCS) — FAST-NUCES (2019) | Islamabad | 3.84 CGPA
 
-Skills:
-LangGraph, LangChain, RAG Pipelines, Groq / Llama-3, FastAPI, Python, TypeScript, Next.js, ChromaDB, PostgreSQL, Redis, Docker, Kubernetes`,
+Technical Skills:
+LangGraph, LangChain, RAG, Python, FastAPI, Docker, Kubernetes, Next.js, TypeScript, PostgreSQL, Redis, Qdrant, PyTorch`
+    },
+    rawResumeText: "",
     jobDescription: {
-      job_title: "Principal AI Systems Architect",
-      company_name: "Frontier Intelligence",
-      raw_text: `Role: Principal AI Systems Architect
-Company: Frontier Intelligence
-Location: Remote / San Francisco, CA
+      job_title: "Staff AI Engineer (Agentic Workflows & Distributed Systems)",
+      company_name: "Arbisoft / Careem Pakistan",
+      raw_text: `Position: Staff AI Engineer — Agentic Systems & Platform
+Location: Lahore / Islamabad, Pakistan (Hybrid)
+Company: Arbisoft
 
-About the Role:
-We are seeking a Principal AI Systems Architect to lead the design and production deployment of our next-generation Agentic AI reasoning platform. You will be responsible for end-to-end multi-agent orchestration, high-scale RAG retrieval, vector database architecture, and sub-second inference pipelines.
+Role Overview:
+We are looking for an exceptional Staff AI Engineer to spearhead our agentic AI application architecture. You will design, build, and deploy production-grade multi-agent reasoning workflows, robust retrieval-augmented generation (RAG) engines, and ultra-low-latency LLM inference pipelines.
 
 Key Responsibilities:
-- Design and scale complex multi-step agentic workflows using LangGraph, stateful graph compilation, and tool calling.
-- Architect real-time RAG systems incorporating grounded semantic citations, reranking, and low-latency chunk retrieval.
-- Build production-grade, typed FastAPI backends with robust rate limiting, observability (LangSmith/OpenTelemetry), and async execution.
-- Collaborate with frontend engineers to build responsive, streaming UX interfaces in Next.js and TypeScript.
-- Drive engineering excellence, automated evaluation benchmarks, and failover redundancy across multiple LLM providers (Groq, Anthropic, Google Gemini).
+* Design stateful, multi-step LLM workflows utilizing LangGraph or equivalent graph-based agent frameworks with cycle detection and human-in-the-loop controls.
+* Build high-precision RAG systems combining semantic vector search (Chroma, Qdrant) with hybrid BM25 lexical reranking and exact chunk citations.
+* Develop resilient, asynchronous microservices using Python (FastAPI), Redis, Docker, and Kubernetes.
+* Implement structured JSON/Pydantic validation schemas with graceful dual-provider fallback mechanisms (e.g. Groq, Google Gemini, OpenAI).
+* Benchmark model latency, token budgets, and cost efficiency across edge and cloud LLM providers.
 
 Required Qualifications:
-- 5+ years of production experience in Python, FastAPI, and asynchronous backend systems.
-- Deep expertise with LangChain, LangGraph, and RAG architectures.
-- Experience with vector stores (ChromaDB, Qdrant, Pinecone) and embedding fine-tuning.
-- Proven experience deploying Docker containers and Kubernetes clusters in high-traffic environments.
-- Exceptional communication skills and ability to mentor engineering teams.`
+* 5+ years of production experience in software engineering, with at least 3 years building AI/ML or LLM-powered applications.
+* Proven mastery of LangChain, LangGraph, Python (FastAPI / AsyncIO), and vector databases.
+* Strong background in Next.js, TypeScript, and modern API architecture.
+* Excellent communication and technical leadership skills.`
     }
   },
+
   {
     id: "healthcare-nurse",
-    name: "Sarah Jenkins, BSN, RN",
-    role: "Lead Trauma & Emergency Care Specialist",
-    industry: "Healthcare & Clinical Nursing",
+    name: "Dr. Ayesha Malik",
+    role: "Lead Clinical Operations Specialist & Trauma Lead",
+    industry: "Healthcare & Clinical Operations",
     badge: "Healthcare / Clinical",
     icon: "HeartPulse",
     resumeData: {
       contact_info: {
-        full_name: "Sarah Jenkins, BSN, RN",
-        email: "sarah.jenkins@nursing-specialists.org",
-        phone: "+1 (312) 555-0199",
-        location: "Chicago, IL",
-        linkedin: "https://linkedin.com/in/sarahjenkins-rn",
-        professional_title: "Lead Trauma & Emergency Department Registered Nurse"
+        full_name: "Dr. Ayesha Malik",
+        email: "ayesha.malik@akuh.edu.pk",
+        phone: "+92 321 5550183",
+        location: "Karachi, Pakistan",
+        linkedin: "https://linkedin.com/in/ayeshamalik-md",
+        professional_title: "Lead Clinical Specialist & Emergency Department Coordinator"
       },
-      professional_summary: "Dedicated, board-certified Emergency & Trauma Registered Nurse (BSN, RN) with 7+ years of acute critical care leadership across Level 1 Trauma Centers. Recognized for rapid patient triage, clinical EHR implementation, crisis de-escalation, and maintaining 100% compliance with Joint Commission and HIPAA protocols.",
-      domain_industry: "Healthcare & Emergency Clinical Nursing",
-      estimated_years_experience: 7.0,
+      professional_summary: "Board-certified Emergency & Trauma Clinical Specialist with 7+ years of acute critical care leadership across Aga Khan University Hospital and Shaukat Khanum Memorial. Recognized for rapid patient triage protocols, EHR optimization, JCIA quality compliance, and multidisciplinary medical team leadership.",
+      domain_industry: "Healthcare & Emergency Clinical Practice",
+      estimated_years_experience: 7.2,
       work_experience: [
         {
-          job_title: "Charge Nurse / Lead Emergency Trauma Specialist",
-          company: "Northwestern Memorial Hospital (Level 1 Trauma Center)",
-          location: "Chicago, IL",
+          job_title: "Lead Trauma Specialist & Clinical Coordinator",
+          company: "Aga Khan University Hospital (AKUH)",
+          location: "Karachi, Pakistan",
           start_date: "2021",
           end_date: "Present",
           is_current: true,
           description_bullets: [
-            "Orchestrated clinical workflow and triage prioritization for a 48-bed Emergency Department managing 180+ acute patient admissions per 12-hour shift.",
-            "Spearheaded hospital-wide Epic EHR clinical documentation overhaul, eliminating charting bottlenecks and reducing medication turnaround time by 28%.",
-            "Supervised and trained a multidisciplinary team of 24 staff RNs, EMTs, and nursing residents in advanced cardiac life support and rapid trauma response.",
-            "Maintained 0% medication dispensing errors over 3 consecutive quarters through rigorous barcode-assisted administration verification."
+            "Directed clinical workflow and triage prioritization for a 60-bed Emergency & Trauma Department managing 200+ acute admissions per 12-hour shift.",
+            "Spearheaded hospital-wide EHR clinical documentation overhaul, eliminating charting bottlenecks and reducing medication turnaround time by 32%.",
+            "Supervised and trained a multidisciplinary team of 30 staff nurses, residents, and EMTs in advanced cardiac life support (ACLS) and disaster response.",
+            "Maintained 100% JCIA hospital accreditation audit compliance over 4 consecutive quarters through standardized clinical protocols."
           ],
-          tools_and_methods: ["Epic EHR", "Patient Triage (ESI)", "IV Cannulation", "Defibrillation / ACLS", "Telemetry Monitoring", "HIPAA Compliance"],
-          quantified_impact: ["180+ daily admissions", "28% charting reduction", "24 staff supervised", "0% medication errors"]
+          tools_and_methods: ["Epic EHR", "JCIA Protocols", "ACLS", "BLS", "Trauma Triage (ESI)", "Clinical Governance"],
+          quantified_impact: ["200+ admissions/shift", "32% faster turnaround", "30 clinical staff trained", "100% audit compliance"]
         },
         {
-          job_title: "Staff Critical Care Nurse (ICU)",
-          company: "Rush University Medical Center",
-          location: "Chicago, IL",
+          job_title: "Emergency Care Specialist",
+          company: "Shaukat Khanum Memorial Cancer Hospital",
+          location: "Lahore, Pakistan",
           start_date: "2018",
           end_date: "2021",
           is_current: false,
           description_bullets: [
-            "Delivered comprehensive hemodynamic monitoring and ventilator management for critically ill medical-surgical ICU patients.",
-            "Collaborated with attending intensivists and respiratory therapists to formulate personalized acute care weaning protocols.",
-            "Educated patients and family members on discharge recovery plans, achieving a 96% patient satisfaction rating."
+            "Provided acute emergency resuscitation and critical care for oncological inpatients experiencing acute sepsis and cardiopulmonary distress.",
+            "Formulated nursing protocol for central line-associated bloodstream infection (CLABSI) reduction, lowering infection incidents by 44% in ICU.",
+            "Conducted weekly clinical morbidity & mortality reviews, presenting actionable root-cause analyses to chief medical officers."
           ],
-          tools_and_methods: ["Ventilator Management", "Central Line Dressing", "Arterial Lines", "Cerner EHR", "Infection Control"],
-          quantified_impact: ["96% satisfaction rating", "32-bed ICU oversight"]
+          tools_and_methods: ["Critical Care", "Hemodynamic Monitoring", "IV Therapy", "Clinical Audits"],
+          quantified_impact: ["44% CLABSI reduction", "100+ critical resuscitations"]
         }
       ],
       education: [
         {
-          degree: "Bachelor of Science in Nursing (BSN)",
-          institution: "University of Illinois at Chicago - College of Nursing",
-          location: "Chicago, IL",
-          graduation_year: "2018",
-          gpa_or_honors: "Magna Cum Laude (3.88 GPA)"
+          degree: "MBBS / Post-Grad Clinical Fellowship",
+          institution: "King Edward Medical University / AKU",
+          location: "Pakistan",
+          graduation_year: "2017",
+          gpa_or_honors: "Honors in Surgery & Medicine"
         }
       ],
       skill_categories: [
         {
-          category_name: "Emergency & Trauma Competencies",
-          skills: ["Acute Trauma Triage (ESI)", "Advanced Cardiac Life Support (ACLS)", "Rapid Sequence Intubation Assist", "Central Venous Access", "Hemodynamic Monitoring"]
+          category_name: "Emergency & Critical Care",
+          skills: ["Acute Trauma Triage (ESI)", "ACLS / BLS / PALS", "Hemodynamic Monitoring", "Disaster Management", "Crisis De-escalation"]
         },
         {
-          category_name: "Clinical Systems & Compliance",
-          skills: ["Epic Systems (Superuser)", "Cerner EHR", "Pyxis MedStation", "Joint Commission Standards", "HIPAA Regulatory Compliance"]
-        },
-        {
-          category_name: "Leadership & Patient Care",
-          skills: ["Charge Nurse Floor Leadership", "Cross-Functional Triage Coordination", "Crisis Intervention", "Preceptorship & Staff Training"]
+          category_name: "Healthcare Systems & Quality",
+          skills: ["Epic EHR Documentation", "JCIA Accreditation", "HIPAA Compliance", "Clinical Governance", "Staff Mentorship"]
         }
       ],
       all_skills_flat: [
-        "Emergency Triage", "ACLS", "BLS", "PALS", "Epic EHR", "Trauma Resuscitation", "Hemodynamic Monitoring", "IV Insertion", "Medication Administration", "HIPAA", "Crisis De-escalation", "Staff Mentorship"
+        "Trauma Triage", "Epic EHR", "JCIA Compliance", "ACLS", "BLS", "PALS", "Critical Care", "Clinical Audits", "Staff Leadership", "Infection Control"
       ],
       projects: [],
       certifications: [
         {
-          name: "Registered Nurse (RN) - State of Illinois License #RN-894120",
-          issuing_organization: "Illinois Department of Financial and Professional Regulation",
-          issue_date: "2018"
-        },
-        {
-          name: "Certified Emergency Nurse (CEN)",
-          issuing_organization: "Board of Certification for Emergency Nursing (BCEN)",
-          issue_date: "2021"
-        },
-        {
-          name: "ACLS, BLS, and PALS Provider",
+          name: "ACLS & BLS Instructor Certification",
           issuing_organization: "American Heart Association",
           issue_date: "2023"
         }
       ],
-      languages: ["English (Native)", "Spanish (Medical Conversational)"]
-    },
-    rawResumeText: `Sarah Jenkins, BSN, RN, CEN
-Email: sarah.jenkins@nursing-specialists.org | Phone: +1 (312) 555-0199 | Chicago, IL
-LinkedIn: linkedin.com/in/sarahjenkins-rn
+      languages: ["English (Fluent)", "Urdu (Native)"],
+      raw_text: `Dr. Ayesha Malik
+Email: ayesha.malik@akuh.edu.pk | Phone: +92 321 5550183 | Karachi, Pakistan
+LinkedIn: linkedin.com/in/ayeshamalik-md
 
 Professional Summary:
-Dedicated, board-certified Emergency & Trauma Registered Nurse (BSN, RN) with 7+ years of acute critical care leadership across Level 1 Trauma Centers. Recognized for rapid patient triage, clinical EHR implementation, crisis de-escalation, and Joint Commission compliance.
+Board-certified Emergency & Trauma Clinical Specialist with 7+ years of acute critical care leadership across Aga Khan University Hospital and Shaukat Khanum Memorial. Recognized for rapid patient triage protocols, EHR optimization, JCIA quality compliance, and multidisciplinary medical team leadership.
 
 Work Experience:
-Northwestern Memorial Hospital — Charge Nurse / Lead Trauma Specialist (2021 - Present)
-* Orchestrated clinical workflow and triage prioritization for a 48-bed Emergency Department managing 180+ acute patient admissions per 12-hour shift.
-* Spearheaded hospital-wide Epic EHR clinical documentation overhaul, eliminating charting bottlenecks and reducing medication turnaround time by 28%.
-* Supervised and trained a multidisciplinary team of 24 staff RNs, EMTs, and nursing residents in advanced cardiac life support and rapid trauma response.
-* Maintained 0% medication dispensing errors over 3 consecutive quarters through rigorous barcode-assisted administration verification.
+Lead Trauma Specialist & Clinical Coordinator — Aga Khan University Hospital (2021 - Present) | Karachi
+* Directed clinical workflow and triage prioritization for a 60-bed Emergency & Trauma Department managing 200+ acute admissions per shift.
+* Spearheaded hospital-wide EHR clinical documentation overhaul, eliminating charting bottlenecks and reducing medication turnaround time by 32%.
+* Supervised and trained a multidisciplinary team of 30 staff nurses, residents, and EMTs in ACLS and disaster response.
+* Maintained 100% JCIA hospital accreditation audit compliance over 4 consecutive quarters.
 
-Rush University Medical Center — Staff Critical Care Nurse (ICU) (2018 - 2021)
-* Delivered comprehensive hemodynamic monitoring and ventilator management for critically ill medical-surgical ICU patients.
-* Collaborated with attending intensivists to formulate acute care weaning protocols, achieving 96% patient satisfaction.
+Emergency Care Specialist — Shaukat Khanum Memorial Cancer Hospital (2018 - 2021) | Lahore
+* Provided acute emergency resuscitation and critical care for oncological inpatients experiencing acute sepsis.
+* Formulated protocol for infection reduction, lowering CLABSI incidents by 44% in ICU.
 
 Education:
-Bachelor of Science in Nursing (BSN) — University of Illinois at Chicago (2018) | Magna Cum Laude
+MBBS / Fellowship — King Edward Medical University / AKU (2017)
 
-Certifications:
-* Registered Nurse (RN) — Illinois State Board
-* Certified Emergency Nurse (CEN) — BCEN
-* ACLS, BLS, PALS — American Heart Association`,
+Skills:
+Trauma Triage (ESI), Epic EHR, JCIA Compliance, ACLS, BLS, PALS, Clinical Governance, Staff Leadership`
+    },
+    rawResumeText: "",
     jobDescription: {
-      job_title: "Clinical Nurse Supervisor - Emergency Department",
-      company_name: "MetroHealth Regional Medical Center",
-      raw_text: `Position: Clinical Nurse Supervisor - Emergency Department
-Hospital: MetroHealth Regional Medical Center (Level 1 Adult & Pediatric Trauma Center)
-Location: Chicago, IL
+      job_title: "Clinical Department Supervisor — Emergency & Critical Care",
+      company_name: "Shifa International Hospital",
+      raw_text: `Position: Clinical Department Supervisor — Emergency Medicine & Critical Care
+Institution: Shifa International Hospital
+Location: Islamabad, Pakistan
 
-Position Overview:
-We are seeking an experienced and compassionate Clinical Nurse Supervisor to lead day-to-day clinical operations within our high-volume Emergency Department. The Supervisor will ensure exceptional standards of patient care, oversee nurse staffing schedules, audit EHR documentation quality, and maintain strict compliance with Joint Commission and IDPH standards.
+Overview:
+We are seeking an experienced Clinical Supervisor to oversee day-to-day operations across our high-volume Emergency Department.
 
-Key Duties:
-- Direct nursing practice, bed coordination, and acuity-based triage assignment across 50+ ED treatment bays.
-- Mentor, onboard, and evaluate performance for 30+ RNs, patient care techs, and clinical support staff.
-- Champion quality improvement initiatives to reduce ED door-to-provider wait times and enhance patient safety benchmarks.
-- Oversee electronic medical records (Epic) compliance, medication reconciliation, and narcotics chain-of-custody audits.
-- Act as incident commander liaison during mass-casualty or code red trauma activations.
+Key Responsibilities:
+* Supervise clinical staff, bed allocations, and acuity-based triage workflows across 50+ ED bays.
+* Drive clinical excellence, JCIA accreditation adherence, and patient safety indicators.
+* Lead disaster preparedness, trauma surge protocols, and code blue response teams.
+* Oversee electronic medical record documentation accuracy and staff training.
 
-Qualifications & Requirements:
-- Active, unencumbered Registered Nurse (RN) license in the State of Illinois (BSN required, MSN preferred).
-- Minimum 5 years of clinical Emergency or Trauma nursing experience with at least 2 years in a Charge Nurse or Supervisory role.
-- Current ACLS, BLS, and PALS certifications from AHA (TNCC or CEN strongly preferred).
-- Demonstrated mastery of Epic EHR clinical workflows.
-- Strong conflict resolution, crisis de-escalation, and empathetic communication skills.`
+Requirements:
+* Recognized medical/clinical degree with 5+ years of high-volume Emergency or Trauma clinical leadership.
+* Current ACLS, BLS, and PALS certifications.
+* Demonstrated mastery of modern hospital EHR documentation systems.
+* Proven track record in clinical team supervision, conflict resolution, and quality audits.`
     }
   },
+
   {
     id: "growth-marketer",
-    name: "Morgan Taylor",
-    role: "VP of Growth & Demand Generation",
-    industry: "B2B SaaS & Growth Marketing",
+    name: "Zainab Ahmed",
+    role: "VP of Growth & Digital Commerce",
+    industry: "E-Commerce & Digital Growth",
     badge: "Marketing / Commercial",
     icon: "TrendingUp",
     resumeData: {
       contact_info: {
-        full_name: "Morgan Taylor",
-        email: "morgan.taylor@growthlead.io",
-        phone: "+1 (212) 555-9012",
-        location: "New York, NY",
-        linkedin: "https://linkedin.com/in/morgantaylor-growth",
-        portfolio_website: "https://morgantaylor.marketing",
-        professional_title: "VP of Growth & Demand Generation"
+        full_name: "Zainab Ahmed",
+        email: "zainab.ahmed@growthlab.pk",
+        phone: "+92 333 5550174",
+        location: "Karachi / Islamabad, Pakistan",
+        linkedin: "https://linkedin.com/in/zainabahmed-growth",
+        professional_title: "VP of Growth & Performance Marketing"
       },
-      professional_summary: "Data-driven Growth Marketing Leader with 8+ years scaling B2B SaaS ARR from $5M to $45M+. Proven track record in multi-channel paid acquisition (LinkedIn, Google Search/YouTube), full-funnel marketing automation (HubSpot/Marketo), product-led growth (PLG) conversion loops, and building high-performance marketing teams.",
-      domain_industry: "B2B SaaS & Digital Growth Marketing",
+      professional_summary: "Performance-driven Growth & Marketing Executive with 8+ years scaling consumer tech, e-commerce, and fintech platforms across Daraz (Alibaba Group) and Jazz (VEON). Expert in full-funnel acquisition, paid media ROI, customer retention, and multi-touch attribution modeling.",
+      domain_industry: "Digital Growth & E-Commerce Marketing",
       estimated_years_experience: 8.0,
       work_experience: [
         {
-          job_title: "Head of Growth & Demand Generation",
-          company: "CloudScale Technologies",
-          location: "New York, NY",
+          job_title: "Head of Growth & Performance Marketing",
+          company: "Daraz (Alibaba Group)",
+          location: "Karachi, Pakistan",
           start_date: "2021",
           end_date: "Present",
           is_current: true,
           description_bullets: [
-            "Scaled Annual Recurring Revenue (ARR) from $12M to $38M in 28 months by building a predictable, multi-channel inbound and outbound pipeline.",
-            "Managed $3.4M annual performance ad budget across LinkedIn Ads and Google Search, achieving an average Customer Acquisition Cost (CAC) payback period of 7.2 months with 4.1x blended ROAS.",
-            "Revamped HubSpot lifecycle nurturing workflows and lead-scoring algorithms, increasing marketing-qualified lead (MQL) to sales-qualified opportunity (SQO) conversion from 14% to 31%.",
-            "Recruited and managed a high-performing 9-person growth team spanning paid media, content strategy, marketing operations, and conversion rate optimization (CRO)."
+            "Managed PKR 450M annual marketing budget across Meta, Google Ads, TikTok, and programmatic networks, scaling GMV by 115% YoY.",
+            "Reduced blended Customer Acquisition Cost (CAC) by 28% through algorithmic bid optimization and high-velocity creative testing (50+ weekly ad variants).",
+            "Built automated lifecycle reactivation loops with Braze and Mixpanel, uplifting 90-day buyer retention rate by 22%."
           ],
-          tools_and_methods: ["HubSpot", "Google Ads", "LinkedIn Campaign Manager", "Mixpanel", "Segment", "Salesforce CRM", "A/B Testing", "SQL"],
-          quantified_impact: ["$12M to $38M ARR", "$3.4M budget", "7.2 mo CAC payback", "31% MQL->SQO conversion", "9-person team"]
+          tools_and_methods: ["Meta Ads Manager", "Google Ads", "TikTok Ads", "Mixpanel", "Braze", "SQL", "Tableau", "Attribution Modeling"],
+          quantified_impact: ["PKR 450M budget managed", "115% YoY GMV growth", "28% CAC reduction", "22% retention uplift"]
         },
         {
-          job_title: "Senior Growth Marketing Manager",
-          company: "SaaSFlow Inc.",
-          location: "New York, NY",
+          job_title: "Digital Growth Lead",
+          company: "Jazz (VEON)",
+          location: "Islamabad, Pakistan",
           start_date: "2018",
           end_date: "2021",
           is_current: false,
           description_bullets: [
-            "Architected organic SEO content cluster strategy generating 450,000 monthly unique visitors and 2,800 monthly organic trial signups.",
-            "Conducted 60+ multivariate landing page experiments using Webflow and Optimizely, improving overall homepage signup conversion rate by 44%."
+            "Scaled digital app monthly active users (MAU) from 1.5M to 8.2M through programmatic ASO, referral loops, and gamified promotions.",
+            "Designed cohort-based churn prediction model in SQL and Python, enabling proactive retention offers that retained 380,000 at-risk subscribers."
           ],
-          tools_and_methods: ["SEO", "Ahrefs", "Optimizely", "Google Analytics 4", "Webflow", "Stripe Billing"],
-          quantified_impact: ["450K monthly visitors", "2,800 trial signups", "44% conversion lift"]
+          tools_and_methods: ["Python", "SQL", "Amplitude", "Google Analytics 4", "AppsFlyer"],
+          quantified_impact: ["1.5M to 8.2M MAU growth", "380k subscribers retained"]
         }
       ],
       education: [
         {
-          degree: "B.S. in Marketing & Data Analytics",
-          institution: "New York University (NYU) - Stern School of Business",
-          location: "New York, NY",
-          graduation_year: "2018",
+          degree: "B.Sc. (Honours) in Economics & Management",
+          institution: "Lahore University of Management Sciences (LUMS)",
+          location: "Lahore, Pakistan",
+          graduation_year: "2016",
           gpa_or_honors: "Dean's Honor List"
         }
       ],
       skill_categories: [
         {
-          category_name: "Growth Strategy & Acquisition",
-          skills: ["B2B Demand Generation", "Paid Search & Social (Google, LinkedIn)", "SEO & Content Clustering", "Product-Led Growth (PLG)", "Pipeline Attribution"]
+          category_name: "Acquisition & Performance",
+          skills: ["Paid Search (SEM)", "Paid Social (Meta/TikTok)", "App Store Optimization (ASO)", "Programmatic Media", "CAC Optimization"]
         },
         {
-          category_name: "MarTech & Analytics",
-          skills: ["HubSpot Marketing Hub", "Salesforce CRM", "Google Analytics 4", "Mixpanel", "Segment CDP", "SQL / BigQuery", "Optimizely (CRO)"]
-        },
-        {
-          category_name: "Leadership & Commercial Operations",
-          skills: ["Budget Allocation ($3M+)", "P&L Management", "Team Leadership & Hiring", "Sales & Marketing Alignment", "Executive Reporting"]
+          category_name: "Retention & Product Analytics",
+          skills: ["Lifecycle Marketing (Braze)", "Cohort Analysis", "Mixpanel / Amplitude", "SQL / BI Dashboards", "A/B Testing"]
         }
       ],
       all_skills_flat: [
-        "B2B Demand Gen", "Paid Acquisition", "SEO", "HubSpot", "Salesforce", "Google Ads", "LinkedIn Ads", "CAC / LTV Optimization", "Conversion Rate Optimization", "SQL", "Mixpanel", "P&L Management"
+        "Performance Marketing", "Meta Ads", "Google Ads", "SQL", "Mixpanel", "Braze", "CAC Optimization", "Retention Modeling", "Growth Hacking", "E-Commerce Strategy"
       ],
       projects: [],
       certifications: [
         {
-          name: "HubSpot Certified Inbound & Revenue Operations Professional",
-          issuing_organization: "HubSpot Academy",
-          issue_date: "2023"
-        },
-        {
-          name: "Reforge Growth Series Graduate",
-          issuing_organization: "Reforge",
+          name: "Meta Certified Media Buying Professional",
+          issuing_organization: "Meta Blueprint",
           issue_date: "2022"
         }
       ],
-      languages: ["English (Native)"]
-    },
-    rawResumeText: `Morgan Taylor
-Email: morgan.taylor@growthlead.io | Phone: +1 (212) 555-9012 | New York, NY
-LinkedIn: linkedin.com/in/morgantaylor-growth | Portfolio: morgantaylor.marketing
+      languages: ["English (Fluent)", "Urdu (Native)"],
+      raw_text: `Zainab Ahmed
+Email: zainab.ahmed@growthlab.pk | Phone: +92 333 5550174 | Karachi, Pakistan
+LinkedIn: linkedin.com/in/zainabahmed-growth
 
 Professional Summary:
-Data-driven Growth Marketing Leader with 8+ years scaling B2B SaaS ARR from $5M to $45M+. Proven track record in multi-channel paid acquisition (LinkedIn, Google Search), full-funnel marketing automation (HubSpot), product-led growth (PLG), and team leadership.
+Performance-driven Growth & Marketing Executive with 8+ years scaling consumer tech, e-commerce, and fintech platforms across Daraz (Alibaba Group) and Jazz (VEON). Expert in full-funnel acquisition, paid media ROI, customer retention, and multi-touch attribution modeling.
 
 Work Experience:
-CloudScale Technologies — Head of Growth & Demand Generation (2021 - Present)
-* Scaled Annual Recurring Revenue (ARR) from $12M to $38M in 28 months by building a predictable, multi-channel inbound and outbound pipeline.
-* Managed $3.4M annual performance ad budget across LinkedIn Ads and Google Search, achieving 7.2 mo CAC payback with 4.1x blended ROAS.
-* Revamped HubSpot lifecycle nurturing workflows and lead scoring, increasing MQL to SQO conversion from 14% to 31%.
-* Recruited and managed a high-performing 9-person growth team.
+Head of Growth & Performance Marketing — Daraz (Alibaba Group) (2021 - Present) | Karachi
+* Managed PKR 450M annual marketing budget, scaling GMV by 115% YoY.
+* Reduced blended CAC by 28% through algorithmic bidding and creative testing.
+* Uplifted 90-day retention by 22% using Braze lifecycle marketing.
 
-SaaSFlow Inc. — Senior Growth Marketing Manager (2018 - 2021)
-* Architected organic SEO content cluster strategy generating 450,000 monthly unique visitors and 2,800 monthly organic trial signups.
-* Conducted 60+ multivariate landing page experiments, improving homepage signup conversion rate by 44%.
+Digital Growth Lead — Jazz (VEON) (2018 - 2021) | Islamabad
+* Scaled digital app MAU from 1.5M to 8.2M through referral loops and ASO.
+* Retained 380,000 at-risk subscribers using cohort analysis in SQL.
 
 Education:
-B.S. in Marketing & Data Analytics — NYU Stern School of Business (2018)
+B.Sc. (Honours) — Lahore University of Management Sciences (LUMS) (2016)
 
 Skills:
-B2B Demand Gen, Paid Acquisition, SEO, HubSpot, Salesforce, Google Ads, LinkedIn Ads, CAC / LTV Optimization, SQL, Mixpanel`,
+Performance Marketing, Meta Ads, Google Ads, SQL, Mixpanel, Braze, CAC Optimization, Retention Modeling`
+    },
+    rawResumeText: "",
     jobDescription: {
-      job_title: "Vice President of Marketing & Growth",
-      company_name: "HyperScale Cloud Enterprise",
-      raw_text: `Job Title: Vice President of Marketing & Growth
-Company: HyperScale Cloud Enterprise
-Location: New York, NY / Hybrid
+      job_title: "Head of Growth & Digital Strategy",
+      company_name: "Foodpanda Pakistan",
+      raw_text: `Position: Head of Growth & Digital Strategy
+Company: Foodpanda Pakistan (Delivery Hero)
+Location: Karachi / Lahore, Pakistan
 
-Role Summary:
-HyperScale Cloud is seeking a visionary Vice President of Marketing & Growth to own our global demand engine and brand positioning. As VP of Marketing, you will own the entire marketing P&L, direct our performance acquisition channels, orchestrate enterprise product launches, and partner closely with the CRO to drive $50M+ in net new pipeline.
+Role Overview:
+We are looking for a visionary Head of Growth to lead user acquisition, retention, and digital marketing strategy across our nationwide delivery network.
 
 Key Responsibilities:
-- Own the global pipeline generation target, managing a $5M+ digital marketing and field events budget.
-- Lead and scale a world-class 15+ person marketing organization across Product Marketing, Demand Gen, Content, and MarTech operations.
-- Deeply optimize customer acquisition cost (CAC), lifetime value (LTV), and pipeline velocity across enterprise and mid-market accounts.
-- Oversee the complete modern MarTech stack (HubSpot, Salesforce, 6sense/Demandbase, Segment, Snowflake).
-- Present regular growth forecasting and attribution metrics to the Board of Directors and Executive leadership.
+* Own high-scale multi-million dollar annual performance marketing budget across paid channels, direct response, and programmatic campaigns.
+* Optimize full-funnel unit economics (CAC, LTV, payback period, and conversion rate).
+* Partner with Product and Data teams to build rigorous A/B experiment roadmaps and user segmentation models.
+* Lead and mentor a team of performance marketers, copywriters, and lifecycle managers.
 
-Candidate Requirements:
-- 8+ years of high-growth B2B SaaS marketing experience, with 3+ years in a Director or VP-level capacity.
-- Demonstrated success scaling B2B SaaS companies past $30M+ ARR.
-- Mastery of modern digital acquisition channels, account-based marketing (ABM), and SEO growth loops.
-- Strong analytical and quantitative orientation (deep familiarity with SQL, Cohort LTV modeling, and multi-touch attribution).
-- Exceptional executive presence, storytelling, and talent mentorship capabilities.`
+Requirements:
+* 6+ years in growth marketing or performance acquisition within high-growth tech / e-commerce companies.
+* Deep mastery of digital ad platforms, attribution modeling, SQL, and cohort analytics.
+* Proven track record scaling revenue, managing large marketing budgets, and leading cross-functional teams.`
     }
   }
 ];

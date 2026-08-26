@@ -53,7 +53,7 @@ export const JobDescriptionInputComponent: React.FC<JobDescriptionInputComponent
               onChange={(e) =>
                 onChange({ ...jobDescription, job_title: e.target.value })
               }
-              placeholder="e.g. Lead Nurse Practitioner or Staff AI Architect"
+              placeholder="e.g. Senior AI Engineer, Full-Stack Developer, or Clinical Lead"
               className="glass-input w-full px-3.5 py-2 text-xs sm:text-sm"
             />
           </div>
@@ -69,10 +69,11 @@ export const JobDescriptionInputComponent: React.FC<JobDescriptionInputComponent
               onChange={(e) =>
                 onChange({ ...jobDescription, company_name: e.target.value })
               }
-              placeholder="e.g. St. Jude Children's or Anthropic"
+              placeholder="e.g. Systems Limited, Jazz, 10Pearls, Arbisoft, or AKUH"
               className="glass-input w-full px-3.5 py-2 text-xs sm:text-sm"
             />
           </div>
+
         </div>
 
         {/* Job Description Textarea */}

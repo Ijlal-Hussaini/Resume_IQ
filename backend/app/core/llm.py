@@ -1,7 +1,9 @@
+import asyncio
 import json
 import logging
 from typing import Any, Dict, List, Optional, Type, TypeVar
 from pydantic import BaseModel
+
 
 from .config import settings
 
@@ -131,14 +133,14 @@ class LLMService:
 
         for client in clients_to_try:
             try:
-                # 1. Try native with_structured_output
+                # 1. Try native with_structured_output with strict 8s timeout
                 structured_llm = client.with_structured_output(schema)
                 messages = []
                 if system_prompt:
                     messages.append({"role": "system", "content": system_prompt})
                 messages.append({"role": "user", "content": prompt})
 
-                result = await structured_llm.ainvoke(messages)
+                result = await asyncio.wait_for(structured_llm.ainvoke(messages), timeout=8.0)
                 if isinstance(result, schema):
                     return result
                 elif isinstance(result, dict):
@@ -146,14 +148,14 @@ class LLMService:
             except Exception as e:
                 logger.warning(f"Structured extraction on client failed: {e}. Trying JSON prompt recovery on client...")
                 try:
-                    # 2. JSON prompt recovery on same client
+                    # 2. JSON prompt recovery on same client with strict 8s timeout
                     json_prompt = f"{prompt}\n\nStrict Requirement: Return ONLY a valid JSON object matching this schema:\n{json.dumps(schema.model_json_schema())}"
                     messages = []
                     if system_prompt:
                         messages.append({"role": "system", "content": system_prompt})
                     messages.append({"role": "user", "content": json_prompt})
                     
-                    raw_res = await client.ainvoke(messages)
+                    raw_res = await asyncio.wait_for(client.ainvoke(messages), timeout=8.0)
                     raw_text = raw_res.content if hasattr(raw_res, "content") else str(raw_res)
                     cleaned = raw_text.strip()
                     if "```json" in cleaned:
@@ -164,6 +166,7 @@ class LLMService:
                     return schema.model_validate(parsed)
                 except Exception as rec_err:
                     logger.warning(f"JSON prompt recovery also failed on client: {rec_err}. Trying next client...")
+
 
         # If both LLMs were rate-limited or failed, execute fallback factory
         if fallback_factory:

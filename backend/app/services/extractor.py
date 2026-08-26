@@ -140,16 +140,46 @@ class ResumeExtractorService:
                     description_bullets=current_bullets or ["Executed core responsibilities and delivered domain objectives."]
                 ))
 
-        # Build Education
+        # Build Education (Intelligent block aggregation without duplicate lines)
         educations = []
         edu_lines = sections["education"]
         if edu_lines:
-            for el in edu_lines[:3]:
-                educations.append(Education(
-                    degree="Degree / Credential",
-                    institution=el,
-                    field_of_study="Specialization"
-                ))
+            combined_edu = " ".join(edu_lines)
+            # 1. Degree
+            deg_match = re.search(
+                r"(BS\s+[A-Za-z\s]+|Bachelor[s]?\s+(?:of\s+)?[A-Za-z\s]+|MS\s+[A-Za-z\s]+|Master[s]?\s+[A-Za-z\s]+|BSc|B\.E\.|MBBS|Associate Degree|PhD)",
+                combined_edu,
+                re.IGNORECASE
+            )
+            degree_title = deg_match.group(0).strip() if deg_match else "Bachelor of Science"
+
+            # 2. Institution
+            inst_match = re.search(
+                r"(National\s+University\s+of\s+Modern\s+Languages(?:\s*\([^)]*\))?|NUML|FAST[- ]NUCES|FAST|NUST|LUMS|COMSATS|GIKI|UET|University of [A-Za-z\s]+|[A-Za-z\s]+ University|[A-Za-z\s]+ College|[A-Za-z\s]+ Institute)",
+                combined_edu,
+                re.IGNORECASE
+            )
+            institution_name = inst_match.group(0).strip() if inst_match else (edu_lines[0] if edu_lines else "University")
+
+            # 3. GPA or Honors
+            gpa_match = re.search(r"(CGPA\s*(?:of|:)?\s*\d+\.?\d*|\d+\.?\d*\s*/\s*4\.0|GPA\s*:\s*\d+\.?\d*|Grade\s*[A-Z\+]|Dean's List)", combined_edu, re.IGNORECASE)
+            gpa_text = gpa_match.group(0).strip() if gpa_match else None
+
+            # 4. Year
+            year_match = re.search(r"(20\d{2}\s*[-–]\s*20\d{2}|20\d{2}|Present)", combined_edu, re.IGNORECASE)
+            year_text = year_match.group(0).strip() if year_match else None
+
+            # Field of Study
+            field_study = "Software Engineering" if "software" in combined_edu.lower() else "Computer Science" if "computer" in combined_edu.lower() else "Domain Specialization"
+
+            educations.append(Education(
+                degree=degree_title,
+                institution=institution_name,
+                field_of_study=field_study,
+                graduation_year=year_text,
+                gpa_or_honors=gpa_text
+            ))
+
 
         # Build Skills
         skills_lines = sections["skills"]

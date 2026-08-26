@@ -12,26 +12,27 @@ logger = logging.getLogger("resumeiq.nodes.suggestions")
 
 class SuggestionsPayload(BaseModel):
     executive_summary: str = Field(description="Strategic executive overview of candidate positioning for this JD")
-    strengths: List[str] = Field(description="Top 3-4 distinct competitive advantages")
-    weaknesses: List[str] = Field(description="Top 2-3 vulnerabilities or perceived gaps")
-    rewrite_suggestions: List[RewriteSuggestion] = Field(description="3-5 concrete bullet rewrites with XYZ framework")
-    interview_prep_questions: List[str] = Field(description="3-5 tailored tough interview questions targeting the candidate's exact gaps")
+    strengths: List[str] = Field(description="Top 3-5 distinct competitive advantages")
+    weaknesses: List[str] = Field(description="Top 2-4 vulnerabilities or perceived gaps")
+    rewrite_suggestions: List[RewriteSuggestion] = Field(description="Comprehensive bullet rewrites with Google XYZ framework across all roles and projects")
+    interview_prep_questions: List[str] = Field(description="4-6 tailored tough interview questions targeting the candidate's profile gaps")
 
 
-SUGGESTIONS_SYSTEM_PROMPT = """You are an Elite Executive Career Coach and Senior Technical Recruiter.
-Your mission is to transform good resume bullets into extraordinary, high-impact statements using the Google XYZ Framework:
+SUGGESTIONS_SYSTEM_PROMPT = """You are an Elite Executive Career Strategist and Principal Technical Recruiter.
+Your mission is to perform a comprehensive, bullet-by-bullet transformation of the candidate's entire resume to align with the Target Job Description using the Google XYZ Formula:
 'Accomplished [X], as measured by [Y], by doing [Z]'
 
-RULES FOR REWRITES:
-1. Field-Agnostic: Use the true domain mechanics of the role (e.g. Clinical protocols for Nursing, Customer Acquisition Costs for Marketing, Structural Codes for Engineering).
-2. Concrete & Specific: Include realistic simulated metrics and action verbs.
-3. Provide Reasoning: Clearly articulate why the rewrite captures recruiter attention and beats automated filters.
-4. Interview Prep: Create tough, realistic behavioral/technical interview questions based on the candidate's actual profile gaps.
+CRITICAL RULES:
+1. Cover ALL Roles & Projects: Do NOT limit rewrites to just 1 position. Generate rewrites across the candidate's work experiences AND projects.
+2. Infuse Target JD Keywords: Naturally integrate the must-have technical skills, methodologies, and terminology from the Target Job Description.
+3. Quantify Impact: Include realistic, industry-credible metrics (e.g., latency reduction %, daily active users, uptime %, performance gains, cost savings, test coverage).
+4. Provide Actionable Rationale: In 'reasoning', explain exactly how the rewrite captures recruiter attention and satisfies automated ATS ranking filters.
+5. Tough Interview Questions: Formulate deep, role-specific behavioral and technical interview questions based on the candidate's exact experience and potential gap areas.
 """
 
 
 async def suggestions_node(state: AgentState) -> AgentState:
-    """LangGraph Node 7: Synthesizes executive summary, XYZ bullet rewrites, and interview prep."""
+    """LangGraph Node 7: Synthesizes executive summary, holistic XYZ bullet rewrites, and interview prep."""
     start_time = time.time()
     logs = list(state.get("execution_logs", []))
 
@@ -41,64 +42,102 @@ async def suggestions_node(state: AgentState) -> AgentState:
 
     def heuristic_suggestions() -> SuggestionsPayload:
         rewrites = []
-        if resume and resume.work_experience:
-            for exp in resume.work_experience[:3]:
-                if exp.description_bullets:
-                    orig = exp.description_bullets[0]
+        if resume:
+            # Experience rewrites
+            for exp in resume.work_experience:
+                for bullet in exp.description_bullets[:2]:
                     rewrites.append(RewriteSuggestion(
                         section=f"{exp.job_title} at {exp.company}",
-                        original_bullet=orig,
-                        rewritten_bullet=f"Spearheaded core domain initiatives across {exp.company}, accelerating key operational benchmarks by 34% through standardized execution workflows and cross-functional leadership.",
-                        reasoning="Elevates a passive task into a quantified outcome demonstrating leadership and strategic velocity.",
-                        framework_used="Google XYZ Formula: Accomplished [X] as measured by [Y] by doing [Z]",
+                        original_bullet=bullet,
+                        rewritten_bullet=f"Architected scalable application modules and automated data pipelines at {exp.company}, boosting operational throughput by 38% and reducing response latency by 220ms through optimized API microservices and containerized workflows.",
+                        reasoning="Transforms a routine task description into an executive-level impact metric showcasing speed, reliability, and technical ownership.",
+                        framework_used="Google XYZ Formula (Accomplished [X] as measured by [Y] by doing [Z])",
                         impact_level="High"
                     ))
-        
+            
+            # Project rewrites
+            for proj in resume.projects[:2]:
+                rewrites.append(RewriteSuggestion(
+                    section=f"Project: {proj.title}",
+                    original_bullet=proj.description or f"Built {proj.title} application using modern software stack.",
+                    rewritten_bullet=f"Engineered full-stack {proj.title} system utilizing {', '.join(proj.tools_technologies[:3]) if proj.tools_technologies else 'modern frameworks'}, handling 1,000+ simulated requests/sec with 99.9% uptime and zero packet loss.",
+                    reasoning="Quantifies throughput and uptime, converting an academic or personal project into production-grade engineering proof.",
+                    framework_used="Google XYZ Formula (Accomplished [X] as measured by [Y] by doing [Z])",
+                    impact_level="High"
+                ))
+
         if not rewrites:
             rewrites.append(RewriteSuggestion(
                 section="Professional Experience",
-                original_bullet="Responsible for daily operations and client deliverables.",
-                rewritten_bullet="Orchestrated daily delivery operations across 12+ client accounts, achieving 99.4% on-time milestone delivery and saving 15 weekly hours via automated workflow templates.",
-                reasoning="Quantifies scale (12+ accounts), quality (99.4%), and efficiency gains (15 hrs).",
+                original_bullet="Responsible for daily development tasks and team collaboration.",
+                rewritten_bullet="Engineered mission-critical microservices and automated CI/CD pipelines, accelerating sprint delivery velocity by 30% while maintaining 99.95% system availability.",
+                reasoning="Demonstrates high-leverage business value, delivery velocity, and operational excellence.",
                 framework_used="Google XYZ Formula",
                 impact_level="High"
             ))
 
         cand_name = resume.contact_info.full_name if (resume and resume.contact_info.full_name) else "Candidate"
         role = job.inferred_title if job else "the target role"
-        ind = job.inferred_industry if job else (resume.domain_industry if resume else "their field")
+        ind = job.inferred_industry if job else (resume.domain_industry if resume else "Software Engineering")
 
         return SuggestionsPayload(
-            executive_summary=f"{cand_name} presents a compelling profile with demonstrated track record in {ind}. Their experience aligns strongly with core operational demands of {role}, with actionable upside upon sharpening quantitative impact metrics.",
+            executive_summary=f"{cand_name} presents a strong, competitive profile in {ind}. The candidate's background demonstrates solid foundational competencies for {role}. By sharpening bullet metrics to highlight quantifiable business velocity and embedding specific target stack keywords, candidate interview conversion will significantly increase.",
             strengths=[
-                f"Strong foundation and domain fluency across {ind}",
-                "Consistent progression across professional milestones and project execution",
-                "Demonstrated adaptability across collaborative environments"
+                f"Demonstrated domain proficiency and hands-on track record in {ind}",
+                "Practical experience building and deploying scalable, modern application architectures",
+                "Strong academic background with high GPA and foundational software competencies",
+                "Proven ability to deliver end-to-end technical solutions in collaborative environments"
             ],
             weaknesses=[
-                "Several work experience bullets focus on routine tasks rather than high-leverage outcomes",
-                "Certain specialized keywords from the target JD could be surfaced more prominently"
+                "Several resume bullets describe task responsibilities rather than quantified business outcomes",
+                "Target job stack keywords could be highlighted more prominently across work experience summaries",
+                "Cloud infrastructure, CI/CD automation, and testing metrics could be further emphasized"
             ],
             rewrite_suggestions=rewrites,
             interview_prep_questions=[
-                f"How have you handled conflicting priorities when leading high-stakes deliverables in {ind}?",
-                "Can you walk through a time a project deviated from plan and how you steered it to a successful outcome?",
-                f"What specific methodologies do you implement to measure success in a {role} position?"
+                f"How did you design and optimize database queries or API endpoints in your work at {resume.work_experience[0].company if (resume and resume.work_experience) else 'your recent role'}?",
+                f"Can you explain the trade-offs you considered when choosing your technical stack for {role} deliverables?",
+                "Describe a situation where a service under your supervision experienced high latency or failure, and how you diagnosed and resolved the root cause.",
+                f"How do you ensure code maintainability, automated testing, and CI/CD reliability across distributed microservices in {ind}?"
             ]
         )
 
     try:
+        # Collect all work experience & projects context
+        all_roles_context = []
+        if resume:
+            for exp in resume.work_experience:
+                all_roles_context.append({
+                    "role": f"{exp.job_title} at {exp.company} ({exp.start_date or ''} - {exp.end_date or ''})",
+                    "original_bullets": exp.description_bullets,
+                    "tools": exp.tools_and_methods
+                })
+            for proj in resume.projects:
+                all_roles_context.append({
+                    "project": proj.title,
+                    "description": proj.description,
+                    "technologies": proj.tools_technologies
+                })
+
         cand_summary = f"""
-Candidate: {resume.contact_info.full_name if resume else 'Candidate'} ({resume.domain_industry if resume else 'General'})
-Experience Bullets: {json.dumps([b for exp in (resume.work_experience if resume else []) for b in exp.description_bullets[:2]])}
-Target JD Title: {job.inferred_title if job else 'Position'}
-Target JD Must Haves: {', '.join(job.must_have_skills if job else [])}
+Candidate Name: {resume.contact_info.full_name if resume else 'Candidate'}
+Domain / Industry: {resume.domain_industry if resume else 'Software Engineering'}
+All Roles & Projects on Resume:
+{json.dumps(all_roles_context, indent=2)}
+
+Candidate Skills: {', '.join(resume.all_skills_flat if resume else [])}
+Target Job Title: {job.inferred_title if job else 'Position'}
+Target Job Must-Haves: {', '.join(job.must_have_skills if job else [])}
+Target Job Nice-To-Haves: {', '.join(job.nice_to_have_skills if job else [])}
 Overall Match Score: {match_scores.overall_score if match_scores else 80}/100
 """
-        prompt = f"""Generate strategic executive briefing and bullet-level rewrites:
+        prompt = f"""Generate a comprehensive strategic executive briefing and Google XYZ bullet-by-bullet rewrites across ALL candidate roles and projects:
 {cand_summary}
 
-Produce a structured SuggestionsPayload."""
+Requirements:
+- Provide 4 to 7 concrete bullet rewrites covering each role and project.
+- Rewrite using Google's XYZ formula: 'Accomplished [X] as measured by [Y] by doing [Z]' with realistic metrics.
+- Produce a structured SuggestionsPayload."""
 
         payload = await llm_service.extract_structured(
             schema=SuggestionsPayload,
@@ -112,7 +151,7 @@ Produce a structured SuggestionsPayload."""
             "node": "Actionable Rewrite & Insight Synthesis",
             "status": "success",
             "duration_sec": elapsed,
-            "message": f"Generated {len(payload.rewrite_suggestions)} bullet rewrites, {len(payload.strengths)} core strengths, and {len(payload.interview_prep_questions)} tailored interview questions."
+            "message": f"Generated {len(payload.rewrite_suggestions)} bullet rewrites across all CV sections, {len(payload.strengths)} strengths, and {len(payload.interview_prep_questions)} tailored interview questions."
         })
 
         return {

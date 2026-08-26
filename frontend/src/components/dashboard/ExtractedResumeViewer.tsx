@@ -214,16 +214,28 @@ export const ExtractedResumeViewer: React.FC<ExtractedResumeViewerProps> = ({ re
           {resumeData.education.map((edu, idx) => (
             <GlassCard key={idx} className="p-5">
               <div className="flex items-center justify-between">
-                <h4 className="text-sm font-bold text-white">{edu.degree}</h4>
-                <span className="text-xs font-mono text-slate-400">{edu.graduation_year}</span>
+                <h4 className="text-sm font-bold text-[var(--text-primary)]">{edu.degree}</h4>
+                {edu.graduation_year && (
+                  <span className="text-xs font-mono text-cyan-400">{edu.graduation_year}</span>
+                )}
               </div>
-              <p className="text-xs text-cyan-300 mt-1">{edu.institution} {edu.location ? `• ${edu.location}` : ""}</p>
-              {edu.field_of_study && <p className="text-xs text-slate-400 mt-0.5">Field: {edu.field_of_study}</p>}
-              {edu.gpa_or_honors && <p className="text-xs text-emerald-300 mt-1">Honors: {edu.gpa_or_honors}</p>}
+              <p className="text-xs text-violet-400 font-medium mt-1">
+                {edu.institution} {edu.location ? `• ${edu.location}` : ""}
+              </p>
+              {edu.field_of_study && !["Specialization", "Domain Specialization"].includes(edu.field_of_study) && (
+                <p className="text-xs text-[var(--text-secondary)] mt-0.5">Field: {edu.field_of_study}</p>
+              )}
+              {edu.gpa_or_honors && (
+                <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-xs font-semibold text-emerald-400">
+                  <span>🏆</span>
+                  <span>{edu.gpa_or_honors}</span>
+                </div>
+              )}
             </GlassCard>
           ))}
         </div>
       )}
+
 
       {activeTab === "projects" && (
         <div className="space-y-4">

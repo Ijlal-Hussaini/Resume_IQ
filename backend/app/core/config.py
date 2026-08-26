@@ -23,14 +23,16 @@ class Settings(BaseSettings):
     
     # LLM Providers
     GROQ_API_KEY: str = ""
-    GROQ_MODEL: str = "openai/gpt-oss-120b"
+    GROQ_MODEL: str = "openai/gpt-oss-20b"
+
     
     GOOGLE_API_KEY: str = ""
     GEMINI_MODEL: str = "gemini-2.5-flash"
 
     
     # Active LLM Provider preference: 'groq' | 'gemini' | 'auto'
-    PREFERRED_PROVIDER: str = "auto"
+    PREFERRED_PROVIDER: str = "groq"
+
     
     # Vector store & Embedding settings
     EMBEDDING_MODEL: str = "all-MiniLM-L6-v2"

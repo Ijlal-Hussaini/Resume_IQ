@@ -76,13 +76,14 @@ class LLMService:
         return providers
 
     def get_llm(self, preferred: Optional[str] = None):
-        """Returns primary LLM or fallback."""
+        """Returns primary LLM or fallback (prioritizes high-throughput Groq)."""
         pref = preferred or settings.PREFERRED_PROVIDER
-        if pref == "groq" and self._groq_client:
-            return self._groq_client
         if pref == "gemini" and self._gemini_client:
             return self._gemini_client
-        return self._groq_client or self._gemini_client or None
+        if self._groq_client:
+            return self._groq_client
+        return self._gemini_client or None
+
 
     async def invoke(self, prompt: str, system_prompt: Optional[str] = None) -> str:
         """Execute LLM invocation with automatic multi-provider fallback."""
@@ -133,39 +134,50 @@ class LLMService:
 
         for client in clients_to_try:
             try:
-                # 1. Try native with_structured_output with strict 8s timeout
-                structured_llm = client.with_structured_output(schema)
+                # 1. Direct JSON extraction with schema (Universal, instant, no tool-calling 400s)
+                json_prompt = f"""{prompt}
+
+CRITICAL: Return ONLY a valid, raw JSON object matching this exact schema (no markdown wrapping if possible, or inside ```json ```):
+{json.dumps(schema.model_json_schema())}"""
                 messages = []
                 if system_prompt:
                     messages.append({"role": "system", "content": system_prompt})
-                messages.append({"role": "user", "content": prompt})
+                messages.append({"role": "user", "content": json_prompt})
 
-                result = await asyncio.wait_for(structured_llm.ainvoke(messages), timeout=8.0)
-                if isinstance(result, schema):
-                    return result
-                elif isinstance(result, dict):
-                    return schema.model_validate(result)
-            except Exception as e:
-                logger.warning(f"Structured extraction on client failed: {e}. Trying JSON prompt recovery on client...")
+                raw_res = await asyncio.wait_for(client.ainvoke(messages), timeout=12.0)
+                raw_text = raw_res.content if hasattr(raw_res, "content") else str(raw_res)
+                cleaned = raw_text.strip()
+                if "```json" in cleaned:
+                    cleaned = cleaned.split("```json")[1].split("```")[0].strip()
+                elif "```" in cleaned:
+                    cleaned = cleaned.split("```")[1].split("```")[0].strip()
+                
+                # If there's leading/trailing text outside braces
+                if "{" in cleaned and "}" in cleaned:
+                    start_idx = cleaned.find("{")
+                    end_idx = cleaned.rfind("}") + 1
+                    cleaned = cleaned[start_idx:end_idx]
+
+                parsed = json.loads(cleaned)
+                return schema.model_validate(parsed)
+            except Exception as json_err:
+                logger.warning(f"Direct JSON schema extraction failed on client: {json_err}. Trying native structured output...")
                 try:
-                    # 2. JSON prompt recovery on same client with strict 8s timeout
-                    json_prompt = f"{prompt}\n\nStrict Requirement: Return ONLY a valid JSON object matching this schema:\n{json.dumps(schema.model_json_schema())}"
+                    # 2. Native with_structured_output fallback
+                    structured_llm = client.with_structured_output(schema)
                     messages = []
                     if system_prompt:
                         messages.append({"role": "system", "content": system_prompt})
-                    messages.append({"role": "user", "content": json_prompt})
-                    
-                    raw_res = await asyncio.wait_for(client.ainvoke(messages), timeout=8.0)
-                    raw_text = raw_res.content if hasattr(raw_res, "content") else str(raw_res)
-                    cleaned = raw_text.strip()
-                    if "```json" in cleaned:
-                        cleaned = cleaned.split("```json")[1].split("```")[0].strip()
-                    elif "```" in cleaned:
-                        cleaned = cleaned.split("```")[1].split("```")[0].strip()
-                    parsed = json.loads(cleaned)
-                    return schema.model_validate(parsed)
-                except Exception as rec_err:
-                    logger.warning(f"JSON prompt recovery also failed on client: {rec_err}. Trying next client...")
+                    messages.append({"role": "user", "content": prompt})
+
+                    result = await asyncio.wait_for(structured_llm.ainvoke(messages), timeout=12.0)
+                    if isinstance(result, schema):
+                        return result
+                    elif isinstance(result, dict):
+                        return schema.model_validate(result)
+                except Exception as struct_err:
+                    logger.warning(f"Structured extraction also failed on client: {struct_err}. Trying next client...")
+
 
 
         # If both LLMs were rate-limited or failed, execute fallback factory

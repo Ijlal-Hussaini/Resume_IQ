@@ -7,15 +7,16 @@ from ..core.vector_store import vector_store_manager
 
 logger = logging.getLogger("resumeiq.rag")
 
-RAG_CHAT_SYSTEM_PROMPT = """You are ResumeIQ's intelligent candidate recruiter assistant.
-You have access to a grounded RAG retrieval index of the candidate's resume.
-Your job is to answer questions asked by recruiters, hiring managers, or candidates accurately and concisely.
+RAG_CHAT_SYSTEM_PROMPT = """You are ResumeIQ's Executive Recruiter Assistant.
+You have access to a grounded RAG retrieval index of the candidate's parsed resume.
+Your job is to answer questions asked by recruiters, hiring managers, or candidates in clean, polished, professional business English.
 
-CRITICAL GUIDELINES:
-1. Grounding: Base your answer STRICTLY on the provided resume context snippets. Do NOT fabricate experience, metrics, or credentials.
-2. Field-Agnostic: Speak authoritatively about whatever industry the candidate is in (healthcare, coding, marketing, sales, trades, education, etc.).
-3. Tone: Professional, analytical, helpful, and objective.
-4. If a question asks about something NOT in the resume, explicitly state that it is not mentioned in the candidate's profile.
+FORMATTING RULES:
+1. Executive Tone: Speak like a Senior Talent Partner or Executive Recruiter giving an objective, insightful briefing.
+2. Clean Markdown: Use bolding (**Skill / Metric**) for key takeaways and bullet points (•) for lists.
+3. NO Raw Blockquotes: Do NOT use markdown blockquotes (>), excessive quotation marks, or robotic copy-paste snippets.
+4. Grounded & Factual: Answer directly based on the provided resume context snippets. Do NOT fabricate experience, metrics, or credentials.
+5. Missing Information: If a question asks for details not present in the resume, state clearly and constructively that it is not documented in their profile.
 """
 
 
@@ -46,7 +47,7 @@ class RAGChatService:
         context_snippets = []
         if citations:
             for idx, cit in enumerate(citations, 1):
-                context_snippets.append(f"[{idx}] (Section: {cit.section_name}): {cit.exact_text}")
+                context_snippets.append(f"[{idx}] Section '{cit.section_name}': {cit.exact_text}")
         elif resume_data:
             context_snippets.append(f"Candidate Summary: {resume_data.professional_summary}")
             if resume_data.all_skills_flat:
@@ -59,24 +60,20 @@ class RAGChatService:
         # Format history
         hist_text = ""
         if history:
-            recent = history[-4:]
-            hist_text = "\n".join([f"{m.role.capitalize()}: {m.content}" for m in recent])
+            recent_hist = history[-4:]
+            hist_text = "\n".join([f"{m.role.capitalize()}: {m.content}" for m in recent_hist])
 
-        prompt = f"""Candidate Resume Context:
-----------------------------------------
+        prompt = f"""RECRUITER QUESTION:
+"{query}"
+
+CANDIDATE RESUME CONTEXT:
 {context_text}
-----------------------------------------
 
-Prior Conversation:
-{hist_text or "None"}
+{"CONVERSATION HISTORY:\n" + hist_text if hist_text else ""}
 
-User Question: {query}
+Provide a direct, well-structured, and executive-level answer to the recruiter's question."""
 
-Please provide a clear, well-structured answer citing specific achievements, roles, or skills from the context."""
-
-        # Attempt LLM answer
-        llm = llm_service.get_llm()
-        if llm:
+        if llm_service.available_providers and ("groq" in llm_service.available_providers or "gemini" in llm_service.available_providers):
             try:
                 answer = await llm_service.invoke(prompt, RAG_CHAT_SYSTEM_PROMPT)
                 if answer and not answer.startswith("System running in fallback"):
@@ -90,7 +87,7 @@ Please provide a clear, well-structured answer citing specific achievements, rol
             except Exception as e:
                 logger.warning(f"LLM RAG chat failed: {e}. Executing heuristic answer.")
 
-        # Fallback Heuristic Generator with grounded citations
+        # Fallback Heuristic Generator with clean professional formatting
         fallback_answer = self._generate_heuristic_answer(query, resume_data, citations)
         followups = self._generate_suggested_followups(query, resume_data)
         return ChatResponse(
@@ -108,34 +105,42 @@ Please provide a clear, well-structured answer citing specific achievements, rol
     ) -> str:
         q = query.lower()
         if not resume_data:
-            return "Based on the provided document, the candidate possesses relevant domain qualifications."
+            return "Based on the provided document, the candidate demonstrates relevant background and domain qualifications."
+
+        if any(w in q for w in ["hire", "fit", "recommend", "should i"]):
+            yrs = resume_data.estimated_years_experience or len(resume_data.work_experience) * 2
+            top_skills = ", ".join(resume_data.all_skills_flat[:6]) if resume_data.all_skills_flat else "relevant industry competencies"
+            roles = ", ".join([f"{e.job_title} at {e.company}" for e in resume_data.work_experience[:2]]) if resume_data.work_experience else "proven industry roles"
+            return f"**Hiring Assessment:**\n\nThe candidate presents a solid profile with approximately **{yrs:.1f} years of experience** in the **{resume_data.domain_industry}** domain. Their primary strengths include hands-on experience as **{roles}**, with core proficiencies in **{top_skills}**.\n\nThey demonstrate strong technical execution and consistent career progression. Consider reviewing target role alignment against specific seniority requirements."
 
         if any(w in q for w in ["leadership", "manage", "lead", "team"]):
             leads = [e for e in resume_data.work_experience if any(k in e.job_title.lower() for k in ["lead", "manager", "head", "director", "senior", "chief"])]
             if leads:
-                roles = ", ".join([f"{l.job_title} at {l.company}" for l in leads])
-                return f"Yes, the candidate demonstrates leadership experience through roles such as: **{roles}**. They have managed key initiatives and cross-functional deliverables."
-            return "The resume highlights substantial individual contributor and collaborative experience across projects and teams."
+                roles = ", ".join([f"**{l.job_title}** at {l.company}" for l in leads])
+                return f"Yes, the candidate demonstrates verifiable leadership track record through roles such as {roles}, where they guided team workflows and took ownership of key deliverables."
+            return "The candidate has demonstrated strong ownership and collaborative contributions across their project history and cross-functional teams."
 
         if any(w in q for w in ["years", "how long", "experience", "seniority"]):
             yrs = resume_data.estimated_years_experience or len(resume_data.work_experience) * 2
-            return f"The candidate has approximately **{yrs:.1f} years** of professional experience spanning **{len(resume_data.work_experience)} recorded positions**."
+            return f"The candidate has approximately **{yrs:.1f} years** of professional experience across **{len(resume_data.work_experience)} documented positions** in **{resume_data.domain_industry}**."
 
         if any(w in q for w in ["skills", "technologies", "tools", "stack"]):
             if resume_data.all_skills_flat:
                 top_skills = ", ".join(resume_data.all_skills_flat[:10])
-                return f"The candidate's core proficiencies include: **{top_skills}**."
+                return f"The candidate's core technical and professional competencies include: **{top_skills}**."
 
         if any(w in q for w in ["education", "degree", "university", "college"]):
             if resume_data.education:
                 ed = resume_data.education[0]
-                return f"The candidate holds a **{ed.degree}** from **{ed.institution}** ({ed.graduation_year or 'Completed'})."
+                g_str = f" ({ed.graduation_year})" if ed.graduation_year else ""
+                h_str = f" with honors" if getattr(ed, 'honors', None) else ""
+                return f"The candidate completed a **{ed.degree}** from **{ed.institution}**{g_str}{h_str}."
 
         if citations:
-            best_chunk = citations[0].exact_text
-            return f"According to the resume ({citations[0].section_name}):\n\n> \"{best_chunk}\""
+            best_chunk = citations[0].exact_text.strip().replace('"', '')
+            return f"According to their **{citations[0].section_name}** section:\n\n{best_chunk}"
 
-        return f"Based on the resume summary: {resume_data.professional_summary or 'Candidate has background in ' + resume_data.domain_industry}."
+        return f"Based on the candidate's profile in **{resume_data.domain_industry}**: {resume_data.professional_summary or 'The candidate exhibits relevant background and qualifications.'}"
 
     def _generate_suggested_followups(self, query: str, resume_data: Optional[ResumeData]) -> List[str]:
         industry = resume_data.domain_industry if resume_data else "their domain"

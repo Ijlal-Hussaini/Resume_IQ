@@ -137,17 +137,29 @@ export const ResumeChatPanel: React.FC<ResumeChatPanelProps> = ({
                     : "bg-[var(--pill-bg)] text-[var(--text-primary)] border border-[var(--glass-border)] rounded-bl-none shadow-sm"
                 }`}
               >
-                <div className="whitespace-pre-wrap font-sans">{
-                  msg.content.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/).map((part, pIdx) => {
-                    if (part.startsWith("**") && part.endsWith("**")) {
-                      return <strong key={pIdx} className="font-semibold text-[var(--card-title)]">{part.slice(2, -2)}</strong>;
-                    }
-                    if (part.startsWith("*") && part.endsWith("*")) {
-                      return <em key={pIdx}>{part.slice(1, -1)}</em>;
-                    }
-                    return <span key={pIdx}>{part}</span>;
-                  })
-                }</div>
+                <div className="whitespace-pre-wrap font-sans space-y-1.5 leading-relaxed">
+                  {msg.content.split("\n").map((line, lIdx) => {
+                    const trimmed = line.trim();
+                    const isQuote = trimmed.startsWith(">");
+                    const cleanLine = isQuote ? line.replace(/^>\s*/, "").replace(/^"/, "").replace(/"$/, "") : line;
+                    return (
+                      <p
+                        key={lIdx}
+                        className={isQuote ? "pl-3 py-1 border-l-2 border-cyan-500/50 bg-cyan-500/5 rounded-r-lg text-[var(--text-secondary)] my-1.5" : ""}
+                      >
+                        {cleanLine.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/).map((part, pIdx) => {
+                          if (part.startsWith("**") && part.endsWith("**")) {
+                            return <strong key={pIdx} className="font-bold text-[var(--card-title)]">{part.slice(2, -2)}</strong>;
+                          }
+                          if (part.startsWith("*") && part.endsWith("*")) {
+                            return <em key={pIdx}>{part.slice(1, -1)}</em>;
+                          }
+                          return <span key={pIdx}>{part}</span>;
+                        })}
+                      </p>
+                    );
+                  })}
+                </div>
 
                 {/* Grounded Citation Chips */}
                 {msg.citations && msg.citations.length > 0 && (

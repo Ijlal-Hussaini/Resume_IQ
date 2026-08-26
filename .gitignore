@@ -3,7 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 venv/
+*.env
+*.env.local
 .env
+backend/.env
+frontend/.env
+
 .pytest_cache/
 *.sqlite3
 

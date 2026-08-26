@@ -23,10 +23,11 @@ class Settings(BaseSettings):
     
     # LLM Providers
     GROQ_API_KEY: str = ""
-    GROQ_MODEL: str = "llama-3.3-70b-versatile"
+    GROQ_MODEL: str = "openai/gpt-oss-120b"
     
     GOOGLE_API_KEY: str = ""
-    GEMINI_MODEL: str = "gemini-2.0-flash"
+    GEMINI_MODEL: str = "gemini-2.5-flash"
+
     
     # Active LLM Provider preference: 'groq' | 'gemini' | 'auto'
     PREFERRED_PROVIDER: str = "auto"
@@ -41,11 +42,12 @@ class Settings(BaseSettings):
     ALLOWED_EXTENSIONS: List[str] = [".pdf", ".docx", ".doc", ".txt", ".png", ".jpg", ".jpeg"]
     
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=(".env", "backend/.env", "../.env", "../backend/.env"),
         env_file_encoding="utf-8",
         extra="ignore",
         case_sensitive=False
     )
+
 
 
 settings = Settings()

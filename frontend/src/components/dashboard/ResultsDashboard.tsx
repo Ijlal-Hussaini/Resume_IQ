@@ -46,7 +46,7 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
   return (
     <div className="space-y-6 animate-fadeIn">
       {/* Top Hero Banner */}
-      <GlassCard className="p-6 border-violet-500/30 bg-gradient-to-r from-violet-950/30 via-slate-900/60 to-cyan-950/30">
+      <GlassCard className="p-6 border-[var(--glass-border)] bg-gradient-to-r from-violet-500/10 via-purple-500/5 to-cyan-500/10">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div>
             <div className="flex items-center gap-2.5 mb-2">
@@ -58,12 +58,12 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
               </Badge>
             </div>
 
-            <h2 className="text-xl sm:text-2xl font-extrabold text-white font-outfit">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-[var(--card-title)] font-outfit">
               {candName}{" "}
-              <span className="text-slate-400 font-normal">evaluated for</span>{" "}
+              <span className="text-[var(--text-muted)] font-normal">evaluated for</span>{" "}
               <span className="text-gradient-primary">{jd.inferred_title}</span>
             </h2>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-1">
               Field-agnostic multi-agent synthesis • {scores.overall_score}% Match Alignment • ATS Score {analysisResult.ats_report.ats_score}/100
             </p>
           </div>
@@ -73,7 +73,7 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
             <GlassButton
               variant="secondary"
               size="md"
-              icon={<MessageSquare className="w-4 h-4 text-cyan-400" />}
+              icon={<MessageSquare className="w-4 h-4 text-cyan-500" />}
               onClick={() => setActiveTab("chat")}
             >
               Chat with Resume
@@ -92,13 +92,13 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
       </GlassCard>
 
       {/* Main Tab Navigation */}
-      <div className="flex bg-black/40 p-1.5 rounded-2xl border border-white/[0.08] overflow-x-auto gap-1">
+      <div className="flex bg-[var(--pill-bg)] p-1.5 rounded-2xl border border-[var(--glass-border)] overflow-x-auto gap-1">
         <button
           onClick={() => setActiveTab("match")}
           className={`flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-xl whitespace-nowrap transition-all cursor-pointer ${
             activeTab === "match"
               ? "bg-violet-600 text-white shadow-[0_0_20px_rgba(139,92,246,0.5)]"
-              : "text-slate-400 hover:text-white"
+              : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--pill-bg)]"
           }`}
         >
           <Gauge className="w-4 h-4" />
@@ -110,10 +110,10 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
           className={`flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-xl whitespace-nowrap transition-all cursor-pointer ${
             activeTab === "rewrites"
               ? "bg-violet-600 text-white shadow-[0_0_20px_rgba(139,92,246,0.5)]"
-              : "text-slate-400 hover:text-white"
+              : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--pill-bg)]"
           }`}
         >
-          <Sparkles className="w-4 h-4 text-amber-400" />
+          <Sparkles className="w-4 h-4 text-amber-500" />
           XYZ Bullet Rewrites ({analysisResult.rewrite_suggestions.length})
         </button>
 
@@ -122,10 +122,10 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
           className={`flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-xl whitespace-nowrap transition-all cursor-pointer ${
             activeTab === "ats"
               ? "bg-violet-600 text-white shadow-[0_0_20px_rgba(139,92,246,0.5)]"
-              : "text-slate-400 hover:text-white"
+              : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--pill-bg)]"
           }`}
         >
-          <ShieldCheck className="w-4 h-4 text-cyan-400" />
+          <ShieldCheck className="w-4 h-4 text-cyan-500" />
           ATS Compliance Audit
         </button>
 
@@ -134,11 +134,11 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
           className={`flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-xl whitespace-nowrap transition-all cursor-pointer ${
             activeTab === "profile"
               ? "bg-violet-600 text-white shadow-[0_0_20px_rgba(139,92,246,0.5)]"
-              : "text-slate-400 hover:text-white"
+              : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--pill-bg)]"
           }`}
         >
-          <UserCheck className="w-4 h-4 text-emerald-400" />
-          Structured Extracted Data
+          <UserCheck className="w-4 h-4 text-emerald-500" />
+          Parsed Profile
         </button>
 
         <button
@@ -146,10 +146,10 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
           className={`flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-xl whitespace-nowrap transition-all cursor-pointer ${
             activeTab === "chat"
               ? "bg-violet-600 text-white shadow-[0_0_20px_rgba(139,92,246,0.5)]"
-              : "text-slate-400 hover:text-white"
+              : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--pill-bg)]"
           }`}
         >
-          <MessageSquare className="w-4 h-4 text-cyan-400" />
+          <MessageSquare className="w-4 h-4 text-cyan-500" />
           RAG Chat & Citations
         </button>
       </div>

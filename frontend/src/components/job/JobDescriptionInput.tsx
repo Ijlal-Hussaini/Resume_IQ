@@ -24,13 +24,13 @@ export const JobDescriptionInputComponent: React.FC<JobDescriptionInputComponent
 }) => {
   return (
     <GlassCard className="p-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/[0.08] pb-4 mb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[var(--glass-border)] pb-4 mb-5">
         <div>
-          <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-[var(--card-title)] flex items-center gap-2">
             <Briefcase className="w-5 h-5 text-cyan-400" />
             Target Job Description & Role Criteria
           </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-[var(--card-subtitle)] mt-0.5">
             Paste target role requirements for deep LangGraph semantic matching & gap critique.
           </p>
         </div>
@@ -43,7 +43,7 @@ export const JobDescriptionInputComponent: React.FC<JobDescriptionInputComponent
         {/* Title & Company Row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label className="text-xs font-medium text-slate-300 mb-1.5 flex items-center gap-1.5">
+            <label className="text-xs font-medium text-[var(--text-secondary)] mb-1.5 flex items-center gap-1.5">
               <Briefcase className="w-3.5 h-3.5 text-slate-400" />
               Target Job Title (Optional)
             </label>
@@ -59,7 +59,7 @@ export const JobDescriptionInputComponent: React.FC<JobDescriptionInputComponent
           </div>
 
           <div>
-            <label className="text-xs font-medium text-slate-300 mb-1.5 flex items-center gap-1.5">
+            <label className="text-xs font-medium text-[var(--text-secondary)] mb-1.5 flex items-center gap-1.5">
               <Building2 className="w-3.5 h-3.5 text-slate-400" />
               Company / Institution (Optional)
             </label>
@@ -77,12 +77,12 @@ export const JobDescriptionInputComponent: React.FC<JobDescriptionInputComponent
 
         {/* Job Description Textarea */}
         <div>
-          <label className="text-xs font-medium text-slate-300 mb-1.5 flex items-center justify-between">
+          <label className="text-xs font-medium text-[var(--text-secondary)] mb-1.5 flex items-center justify-between">
             <span className="flex items-center gap-1.5">
               <AlignLeft className="w-3.5 h-3.5 text-slate-400" />
               Job Description Text & Requirements *
             </span>
-            <span className="text-[11px] text-slate-400 font-mono">
+            <span className="text-[11px] text-[var(--text-muted)] font-mono">
               {jobDescription.raw_text.length} chars
             </span>
           </label>
@@ -96,6 +96,7 @@ export const JobDescriptionInputComponent: React.FC<JobDescriptionInputComponent
             className="glass-input w-full p-4 text-xs sm:text-sm leading-relaxed font-sans resize-y"
           />
         </div>
+
 
         {/* Action Trigger Row */}
         <div className="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">

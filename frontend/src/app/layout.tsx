@@ -47,8 +47,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`dark ${inter.variable} ${outfit.variable}`}>
-      <body className="bg-[#07080d] text-slate-100 antialiased min-h-screen relative overflow-x-hidden selection:bg-purple-500/30 selection:text-purple-200">
+      <body className="bg-[var(--bg-base)] text-[var(--text-primary)] antialiased min-h-screen relative overflow-x-hidden selection:bg-purple-500/30 selection:text-purple-200 transition-colors duration-300">
         {/* Liquid Glass Ambient Gradient Orbs */}
+
         <div className="ambient-orb-1" aria-hidden="true" />
         <div className="ambient-orb-2" aria-hidden="true" />
         <div className="ambient-orb-3" aria-hidden="true" />

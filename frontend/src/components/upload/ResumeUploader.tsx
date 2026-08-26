@@ -150,23 +150,23 @@ export const ResumeUploader: React.FC<ResumeUploaderProps> = ({
 
       {/* Main Upload Container */}
       <GlassCard className="p-6">
-        <div className="flex items-center justify-between border-b border-white/[0.08] pb-4 mb-5">
+        <div className="flex items-center justify-between border-b border-[var(--glass-border)] pb-4 mb-5">
           <div>
-            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-[var(--card-title)] flex items-center gap-2">
               <FileText className="w-5 h-5 text-violet-400" />
               Ingest Candidate Resume
             </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-[var(--card-subtitle)] mt-0.5">
               Upload any PDF, DOCX, TXT, or scan. Works across all professions.
             </p>
           </div>
 
           {/* Mode Switcher */}
-          <div className="flex bg-black/40 p-1 rounded-xl border border-white/[0.06]">
+          <div className="flex bg-[var(--pill-bg)] p-1 rounded-xl border border-[var(--glass-border)]">
             <button
               onClick={() => setActiveTab("file")}
               className={`px-3 py-1 text-xs font-medium rounded-lg transition-all ${
-                activeTab === "file" ? "bg-violet-600 text-white shadow" : "text-slate-400 hover:text-white"
+                activeTab === "file" ? "bg-violet-600 text-white shadow" : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
               }`}
             >
               Upload Document
@@ -174,7 +174,7 @@ export const ResumeUploader: React.FC<ResumeUploaderProps> = ({
             <button
               onClick={() => setActiveTab("text")}
               className={`px-3 py-1 text-xs font-medium rounded-lg transition-all ${
-                activeTab === "text" ? "bg-violet-600 text-white shadow" : "text-slate-400 hover:text-white"
+                activeTab === "text" ? "bg-violet-600 text-white shadow" : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
               }`}
             >
               Paste Text
@@ -210,46 +210,30 @@ export const ResumeUploader: React.FC<ResumeUploaderProps> = ({
               className={`relative cursor-pointer rounded-2xl border-2 border-dashed transition-all duration-300 p-8 sm:p-12 text-center flex flex-col items-center justify-center ${
                 dragOver
                   ? "border-violet-400 bg-violet-500/10 shadow-[0_0_30px_rgba(139,92,246,0.3)]"
-                  : "border-white/15 bg-white/[0.02] hover:border-white/30 hover:bg-white/[0.04]"
+                  : "border-[var(--glass-border)] bg-[var(--pill-bg)] hover:border-violet-500/40"
               }`}
             >
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-violet-600/30 to-cyan-500/20 border border-white/15 flex items-center justify-center mb-4 shadow-lg">
-                <UploadCloud className="w-8 h-8 text-violet-300 animate-bounce" />
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-violet-600/30 to-cyan-500/20 border border-[var(--glass-border)] flex items-center justify-center mb-4 shadow-lg">
+                <UploadCloud className="w-8 h-8 text-violet-400 animate-bounce" />
               </div>
 
-              <h3 className="text-base font-semibold text-white mb-1">
-                Drop your resume file here, or <span className="text-violet-400 underline">browse</span>
+              <h3 className="text-base font-semibold text-[var(--card-title)] mb-1">
+                Drop your resume file here, or <span className="text-violet-500 underline font-bold">browse</span>
               </h3>
-              <p className="text-xs text-slate-400 max-w-sm mb-4">
+              <p className="text-xs text-[var(--card-subtitle)] max-w-sm mb-4">
                 Supports PDF, DOCX, TXT, or scanned images. Max file size 15MB.
               </p>
 
-              <div className="flex flex-wrap items-center justify-center gap-2">
-                <Badge variant="slate" size="sm">PDF</Badge>
-                <Badge variant="slate" size="sm">DOCX</Badge>
-                <Badge variant="slate" size="sm">TXT</Badge>
-                <Badge variant="slate" size="sm">OCR Fallback</Badge>
+              <div className="flex items-center gap-2 text-[11px] text-[var(--text-muted)]">
+                <span className="px-2 py-0.5 rounded bg-[var(--pill-bg)] border border-[var(--glass-border)] font-mono">PDF</span>
+                <span className="px-2 py-0.5 rounded bg-[var(--pill-bg)] border border-[var(--glass-border)] font-mono">DOCX</span>
+                <span className="px-2 py-0.5 rounded bg-[var(--pill-bg)] border border-[var(--glass-border)] font-mono">TXT</span>
+                <span className="px-2 py-0.5 rounded bg-[var(--pill-bg)] border border-[var(--glass-border)] font-mono">OCR Fallback</span>
               </div>
             </div>
-
-            {selectedFile && (
-              <div className="mt-4 p-3.5 rounded-xl bg-violet-500/10 border border-violet-500/25 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                  <div>
-                    <p className="text-xs font-semibold text-white">{selectedFile.name}</p>
-                    <p className="text-[11px] text-slate-400">
-                      {(selectedFile.size / 1024).toFixed(1)} KB • Ready for extraction
-                    </p>
-                  </div>
-                </div>
-                <Badge variant="emerald" size="sm">Loaded</Badge>
-              </div>
-            )}
           </div>
         ) : (
-          /* Raw Text Area Tab */
-          <div className="space-y-4">
+          <div>
             <textarea
               value={rawText}
               onChange={(e) => setRawText(e.target.value)}

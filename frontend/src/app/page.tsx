@@ -173,15 +173,16 @@ export default function Home() {
               <span>Multi-Agent LangGraph Career Intelligence Engine</span>
             </div>
 
-            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white font-outfit leading-tight">
+            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[var(--card-title)] font-outfit leading-tight">
               Transform Any Resume Into{" "}
               <span className="text-gradient-accent">Grounded Intelligence</span>
             </h1>
 
-            <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-sm sm:text-base text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed">
               Field-agnostic structured extraction, 7-node LangGraph job description matching,
               bullet-level Google XYZ rewrites, and zero-hallucination RAG chat with section citations.
             </p>
+
 
             <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
               <Badge variant="violet" size="sm" icon={<Zap className="w-3 h-3" />}>

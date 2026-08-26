@@ -41,29 +41,29 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/[0.08] dark:border-white/[0.08] light:border-slate-200/80 bg-[#07080d]/80 dark:bg-[#07080d]/80 light:bg-white/80 backdrop-blur-2xl px-4 sm:px-8 py-3.5 transition-all">
+    <header className="sticky top-0 z-50 border-b border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur-2xl px-4 sm:px-8 py-3.5 transition-all shadow-sm">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Brand Logo & Tagline */}
         <div className="flex items-center gap-3.5">
           <div className="relative group cursor-pointer" onClick={onReset}>
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-violet-600 via-purple-600 to-cyan-500 p-[1px] shadow-[0_0_20px_rgba(139,92,246,0.4)] transition-transform duration-300 group-hover:scale-105">
-              <div className="w-full h-full bg-[#0d0f1a] dark:bg-[#0d0f1a] light:bg-white rounded-2xl flex items-center justify-center">
+              <div className="w-full h-full bg-[var(--bg-surface)] rounded-2xl flex items-center justify-center">
                 <Sparkles className="w-5 h-5 text-violet-400 animate-pulse" />
               </div>
             </div>
-            <span className="absolute -bottom-1 -right-1 w-3 h-3 bg-emerald-500 border-2 border-[#07080d] rounded-full" />
+            <span className="absolute -bottom-1 -right-1 w-3 h-3 bg-emerald-500 border-2 border-[var(--bg-base)] rounded-full" />
           </div>
 
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold tracking-tight text-white dark:text-white light:text-slate-900 font-outfit">
+              <h1 className="text-xl font-bold tracking-tight text-[var(--card-title)] font-outfit">
                 Resume<span className="text-gradient-accent font-extrabold">IQ</span>
               </h1>
               <Badge variant="violet" size="sm">
                 Production AI
               </Badge>
             </div>
-            <p className="text-xs text-slate-400 dark:text-slate-400 light:text-slate-600 hidden sm:block">
+            <p className="text-xs text-[var(--text-muted)] hidden sm:block">
               AI Career Intelligence & Field-Agnostic CV Parser
             </p>
           </div>
@@ -72,13 +72,14 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Status Indicators & Navigation Actions */}
         <div className="flex items-center gap-2.5 sm:gap-3">
           {/* Provider Pill */}
-          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] dark:bg-white/[0.04] light:bg-slate-100 border border-white/[0.08] dark:border-white/[0.08] light:border-slate-200 text-xs text-slate-300 dark:text-slate-300 light:text-slate-700">
+          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--pill-bg)] border border-[var(--glass-border)] text-xs text-[var(--text-secondary)]">
             <Cpu className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="text-slate-400 dark:text-slate-400 light:text-slate-500">LLM Core:</span>
+            <span className="text-[var(--text-muted)]">LLM Core:</span>
             <span className="font-medium truncate max-w-[140px]">
               {healthInfo?.active_llm_provider || "Google Gemini 2.5"}
             </span>
           </div>
+
 
           {/* Theme Toggle Button */}
           <GlassButton

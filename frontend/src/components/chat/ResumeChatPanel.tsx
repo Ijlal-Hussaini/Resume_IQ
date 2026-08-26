@@ -134,16 +134,16 @@ export const ResumeChatPanel: React.FC<ResumeChatPanelProps> = ({
                 className={`p-4 rounded-2xl text-xs sm:text-sm leading-relaxed ${
                   msg.role === "user"
                     ? "bg-violet-600 text-white rounded-br-none shadow-md"
-                    : "bg-white/[0.04] text-slate-200 border border-white/[0.08] rounded-bl-none"
+                    : "bg-[var(--pill-bg)] text-[var(--text-primary)] border border-[var(--glass-border)] rounded-bl-none shadow-sm"
                 }`}
               >
                 <div className="whitespace-pre-wrap font-sans">{msg.content}</div>
 
                 {/* Grounded Citation Chips */}
                 {msg.citations && msg.citations.length > 0 && (
-                  <div className="mt-3.5 pt-2.5 border-t border-white/[0.08]">
-                    <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-1 mb-1.5">
-                      <BookOpen className="w-3 h-3 text-cyan-400" />
+                  <div className="mt-3.5 pt-2.5 border-t border-[var(--glass-border)]">
+                    <span className="text-[10px] uppercase font-bold text-[var(--text-muted)] tracking-wider flex items-center gap-1 mb-1.5">
+                      <BookOpen className="w-3 h-3 text-cyan-500" />
                       Grounded Citations ({msg.citations.length}):
                     </span>
                     <div className="flex flex-wrap gap-1.5">
@@ -151,11 +151,11 @@ export const ResumeChatPanel: React.FC<ResumeChatPanelProps> = ({
                         <button
                           key={cIdx}
                           onClick={() => setActiveCitation(cit)}
-                          className="px-2.5 py-1 rounded-lg bg-cyan-950/40 hover:bg-cyan-900/60 border border-cyan-500/30 text-[11px] text-cyan-300 transition-all flex items-center gap-1 cursor-pointer"
+                          className="px-2.5 py-1 rounded-lg bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 text-[11px] text-sky-700 dark:text-sky-300 transition-all flex items-center gap-1 cursor-pointer"
                         >
-                          <Quote className="w-2.5 h-2.5 text-cyan-400" />
+                          <Quote className="w-2.5 h-2.5 text-cyan-500" />
                           <span className="truncate max-w-[180px]">{cit.section_name}</span>
-                          <span className="text-[10px] text-slate-400">({Math.round(cit.relevance_score * 100)}%)</span>
+                          <span className="text-[10px] text-[var(--text-muted)]">({Math.round(cit.relevance_score * 100)}%)</span>
                         </button>
                       ))}
                     </div>
@@ -164,8 +164,8 @@ export const ResumeChatPanel: React.FC<ResumeChatPanelProps> = ({
               </div>
 
               {msg.role === "user" && (
-                <div className="w-7 h-7 rounded-xl bg-slate-700/40 border border-slate-600/40 flex items-center justify-center shrink-0 mt-1">
-                  <User className="w-3.5 h-3.5 text-slate-300" />
+                <div className="w-7 h-7 rounded-xl bg-[var(--pill-bg)] border border-[var(--glass-border)] flex items-center justify-center shrink-0 mt-1">
+                  <User className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
                 </div>
               )}
             </div>
@@ -177,7 +177,7 @@ export const ResumeChatPanel: React.FC<ResumeChatPanelProps> = ({
                   <button
                     key={sIdx}
                     onClick={() => handleSendMessage(sug)}
-                    className="text-[11px] px-2.5 py-1 rounded-full bg-white/[0.03] hover:bg-violet-500/20 border border-white/[0.08] hover:border-violet-500/40 text-slate-400 hover:text-violet-200 transition-all text-left flex items-center gap-1 cursor-pointer"
+                    className="text-[11px] px-2.5 py-1 rounded-full bg-[var(--pill-bg)] hover:bg-violet-500/15 border border-[var(--glass-border)] hover:border-violet-500/40 text-[var(--text-secondary)] hover:text-violet-600 dark:hover:text-violet-300 transition-all text-left flex items-center gap-1 cursor-pointer"
                   >
                     <span>{sug}</span>
                     <ChevronRight className="w-2.5 h-2.5" />
@@ -193,7 +193,7 @@ export const ResumeChatPanel: React.FC<ResumeChatPanelProps> = ({
             <div className="w-7 h-7 rounded-xl bg-violet-600/30 border border-violet-500/40 flex items-center justify-center">
               <Sparkles className="w-3.5 h-3.5 text-violet-300 animate-spin" />
             </div>
-            <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/[0.06] text-xs text-slate-400 flex items-center gap-2">
+            <div className="p-3 rounded-2xl bg-[var(--pill-bg)] border border-[var(--glass-border)] text-xs text-[var(--text-secondary)] flex items-center gap-2">
               <span>Retrieving vector chunks & formulating citation...</span>
             </div>
           </div>
@@ -205,7 +205,7 @@ export const ResumeChatPanel: React.FC<ResumeChatPanelProps> = ({
       {/* Suggested Quick Prompt Chips (if few messages) */}
       {messages.length <= 2 && (
         <div className="mb-3 shrink-0">
-          <p className="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-1.5">
+          <p className="text-[10px] uppercase font-bold text-[var(--text-muted)] tracking-wider mb-1.5">
             Recruiter Prompt Ideas:
           </p>
           <div className="flex flex-wrap gap-1.5">
@@ -213,7 +213,7 @@ export const ResumeChatPanel: React.FC<ResumeChatPanelProps> = ({
               <button
                 key={i}
                 onClick={() => handleSendMessage(p)}
-                className="text-[11px] px-2.5 py-1 rounded-lg bg-white/[0.03] hover:bg-violet-500/20 border border-white/[0.08] hover:border-violet-500/30 text-slate-300 hover:text-white transition-all cursor-pointer"
+                className="text-[11px] px-2.5 py-1 rounded-lg bg-[var(--pill-bg)] hover:bg-violet-500/15 border border-[var(--glass-border)] hover:border-violet-500/30 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all cursor-pointer"
               >
                 {p}
               </button>
@@ -221,6 +221,7 @@ export const ResumeChatPanel: React.FC<ResumeChatPanelProps> = ({
           </div>
         </div>
       )}
+
 
       {/* Citation Popover Modal/Card if user clicks a citation */}
       {activeCitation && (

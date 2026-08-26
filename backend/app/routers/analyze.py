@@ -50,61 +50,87 @@ async def analyze_against_job_description(request: AnalyzeJobRequest):
         raise HTTPException(status_code=500, detail=f"Pipeline execution error: {str(e)}")
 
 
+def clean_jd_text(text: str) -> str:
+    """Sanitizes raw LLM output into clean, professional recruiter text."""
+    import re
+    # Remove markdown header hashes (# Title -> Title)
+    cleaned = re.sub(r"^#{1,6}\s*", "", text, flags=re.MULTILINE)
+    # Remove bold/italic markdown (**text** -> text, *text* -> text)
+    cleaned = re.sub(r"\*\*([^*]+)\*\*", r"\1", cleaned)
+    cleaned = re.sub(r"\*([^*]+)\*", r"\1", cleaned)
+    # Remove horizontal rules (--- or ===)
+    cleaned = re.sub(r"^[-\=_]{3,}\s*$", "", cleaned, flags=re.MULTILINE)
+    # Replace markdown table rows with clean bullets
+    cleaned = re.sub(r"^\|(?:\s*[-:]+\s*\|)+$", "", cleaned, flags=re.MULTILINE)
+    cleaned = re.sub(r"^\|\s*([^|]+)\s*\|\s*([^|]+)\s*\|", r"• \1: \2", cleaned, flags=re.MULTILINE)
+    # Standardize bullet markers to clean bullet (•)
+    cleaned = re.sub(r"^\s*[-*]\s+", "• ", cleaned, flags=re.MULTILINE)
+    # Remove excessive blank lines
+    cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
+    return cleaned.strip()
+
+
 @router.post("/generate-jd", response_model=ApiResponse)
 async def generate_job_description(request: GenerateJDRequest):
     """
-    Auto-generates / retrieves a comprehensive, industry-aligned Job Description
-    based on the target job title and company name.
+    Auto-generates a comprehensive, industry-aligned Job Description in clean professional text.
     """
     if not request.job_title or len(request.job_title.strip()) < 2:
         raise HTTPException(status_code=400, detail="A valid job title is required to generate criteria.")
 
     company_clause = f" at {request.company_name}" if request.company_name else ""
-    prompt = f"""Generate a comprehensive, realistic, and industry-standard Job Description for the role: "{request.job_title}"{company_clause}.
+    prompt = f"""Write a professional, realistic Job Description for the position: "{request.job_title}"{company_clause}.
 
-Include the following sections clearly formatted in markdown:
-1. Position Overview & Company Context
-2. Key Responsibilities & Core Deliverables (5-6 detailed bullet points)
-3. Must-Have Qualifications & Technical Skills (5-6 specific items)
-4. Preferred Experience & Nice-to-Have Competencies
-5. Tools, Frameworks, and Methodologies
+CRITICAL FORMATTING INSTRUCTIONS:
+- Do NOT use markdown symbols: NO hashtags (no # or ##), NO bold asterisks (no **text**), NO horizontal lines (no ---), and NO pipe tables.
+- Use plain uppercase for Section Headings (e.g. POSITION OVERVIEW, CORE RESPONSIBILITIES, REQUIRED QUALIFICATIONS, PREFERRED SKILLS, TOOLS & TECHNOLOGIES).
+- Use standard bullet points (• ) for lists.
+- Write in clean, professional, corporate HR English.
 
-Format as clean, professional text suitable for direct evaluation against a candidate's resume."""
+Include:
+1. POSITION OVERVIEW & CONTEXT
+2. KEY RESPONSIBILITIES (5-6 detailed bullet points)
+3. REQUIRED QUALIFICATIONS & SKILLS (5-6 specific bullet points)
+4. PREFERRED QUALIFICATIONS (3-4 bullet points)
+5. TOOLS & TECHNOLOGIES (bullet points)"""
 
-    system_prompt = "You are an expert Executive Technical Recruiter and Job Architecture Specialist."
+    system_prompt = "You are a Principal Technical Recruiter and Job Architecture Specialist. You write clean, polished job postings in professional text format."
 
     try:
         from ..core.llm import llm_service
         generated_jd = await llm_service.invoke(prompt, system_prompt)
+        cleaned_jd = clean_jd_text(generated_jd)
 
         return ApiResponse(
             success=True,
-            message="Job description criteria synthesized successfully.",
+            message="Job description criteria synthesized successfully in professional format.",
             data={
                 "job_title": request.job_title,
                 "company_name": request.company_name or "",
-                "raw_text": generated_jd
+                "raw_text": cleaned_jd
             }
         )
     except Exception as e:
         logger.error(f"Error generating job description: {e}")
-        # Fallback template
-        fallback_jd = f"""Position: {request.job_title}{company_clause}
+        fallback_jd = f"""POSITION: {request.job_title.upper()}{company_clause.upper()}
 
-Role Overview:
-We are seeking a talented and driven {request.job_title} to join our team{company_clause}. You will take ownership of key deliverables, collaborate cross-functionally, and drive domain impact.
+POSITION OVERVIEW:
+We are seeking a talented and driven {request.job_title} to join our team{company_clause}. In this role, you will take ownership of key deliverables, collaborate cross-functionally, and drive tangible impact.
 
-Key Responsibilities:
-* Design, implement, and maintain scalable solutions and workflows.
-* Collaborate with stakeholders to deliver high-quality business and technical results.
-* Ensure best practices in execution, quality assurance, and system reliability.
-* Continuously improve processes, documentation, and team standards.
+KEY RESPONSIBILITIES:
+• Design, implement, and maintain scalable solutions and production workflows.
+• Collaborate with cross-functional team members to deliver high-quality technical results.
+• Ensure best practices in architecture, code quality, and system reliability.
+• Continuously improve processes, engineering documentation, and delivery standards.
 
-Required Qualifications:
-* Demonstrated hands-on experience in {request.job_title} domain.
-* Strong problem-solving, communication, and project delivery skills.
-* Proficiency with modern industry tools, methodologies, and frameworks.
-* Bachelor's degree or equivalent practical industry experience."""
+REQUIRED QUALIFICATIONS & SKILLS:
+• Demonstrated hands-on experience in {request.job_title} domain.
+• Strong problem-solving, analytical, and cross-functional communication skills.
+• Proficiency with modern industry tools, methodologies, and framework architectures.
+• Bachelor degree in Software Engineering, Computer Science, or equivalent practical experience.
+
+TOOLS & TECHNOLOGIES:
+• Modern programming languages, Git version control, CI/CD pipelines, and cloud services."""
 
         return ApiResponse(
             success=True,
@@ -115,4 +141,5 @@ Required Qualifications:
                 "raw_text": fallback_jd
             }
         )
+
 

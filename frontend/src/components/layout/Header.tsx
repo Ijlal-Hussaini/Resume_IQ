@@ -44,80 +44,77 @@ export const Header: React.FC<HeaderProps> = ({
     <header className="sticky top-0 z-50 border-b border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur-2xl px-4 sm:px-8 py-3.5 transition-all shadow-sm">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Brand Logo & Tagline */}
-        <div className="flex items-center gap-3.5">
+        <div className="flex items-center gap-2.5 sm:gap-3.5 shrink-0">
           <div className="relative group cursor-pointer" onClick={onReset}>
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-violet-600 via-purple-600 to-cyan-500 p-[1px] shadow-[0_0_20px_rgba(139,92,246,0.4)] transition-transform duration-300 group-hover:scale-105">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-violet-600 via-purple-600 to-cyan-500 p-[1px] shadow-[0_0_20px_rgba(139,92,246,0.4)] transition-transform duration-300 group-hover:scale-105">
               <div className="w-full h-full bg-[var(--bg-surface)] rounded-2xl flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-violet-400 animate-pulse" />
+                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-violet-400" />
               </div>
             </div>
-            <span className="absolute -bottom-1 -right-1 w-3 h-3 bg-emerald-500 border-2 border-[var(--bg-base)] rounded-full" />
+            <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-[var(--bg-base)] rounded-full" />
           </div>
 
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold tracking-tight text-[var(--card-title)] font-outfit">
+              <h1 className="text-lg sm:text-xl font-bold tracking-tight text-[var(--card-title)] font-outfit">
                 Resume<span className="text-gradient-accent font-extrabold">IQ</span>
               </h1>
-              <Badge variant="violet" size="sm">
-                Production AI
-              </Badge>
+              <span className="hidden sm:inline-flex">
+                <Badge variant="violet" size="sm">
+                  Production AI
+                </Badge>
+              </span>
             </div>
-            <p className="text-xs text-[var(--text-muted)] hidden sm:block">
+            <p className="text-xs text-[var(--text-muted)] hidden md:block">
               AI Career Intelligence & Field-Agnostic CV Parser
             </p>
           </div>
         </div>
 
         {/* Status Indicators & Navigation Actions */}
-        <div className="flex items-center gap-2.5 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-2.5">
           {/* Provider Pill */}
-          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-200/80 dark:bg-[var(--pill-bg)] border border-slate-300 dark:border-[var(--glass-border)] text-xs shadow-sm">
+          <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-200/80 dark:bg-[var(--pill-bg)] border border-slate-300 dark:border-[var(--glass-border)] text-xs shadow-sm">
             <Cpu className="w-3.5 h-3.5 text-cyan-700 dark:text-cyan-400" />
-            <span className="text-slate-800 dark:text-[var(--text-muted)] font-bold">LLM Core:</span>
-            <span className="font-bold text-slate-950 dark:text-slate-100 truncate max-w-[140px]">
-              {healthInfo?.active_llm_provider || "Groq (qwen/qwen3.8-27b)"}
+            <span className="text-slate-800 dark:text-[var(--text-muted)] font-bold">LLM:</span>
+            <span className="font-bold text-slate-950 dark:text-slate-100 truncate max-w-[130px]">
+              {healthInfo?.active_llm_provider || "Groq (qwen)"}
             </span>
           </div>
 
-
           {/* Theme Toggle Button */}
-          <GlassButton
-            variant="ghost"
-            size="sm"
+          <button
             onClick={toggleTheme}
-            icon={theme === "dark" ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-violet-700" />}
+            className="p-2 sm:px-3 sm:py-1.5 rounded-xl border border-[var(--glass-border)] bg-[var(--pill-bg)] hover:bg-slate-500/10 text-slate-800 dark:text-slate-200 flex items-center gap-1.5 transition-all text-xs font-semibold cursor-pointer shrink-0"
             title="Toggle Light/Dark Theme"
           >
-            <span className="hidden sm:inline font-semibold text-slate-800 dark:text-slate-200">{theme === "dark" ? "Light" : "Dark"}</span>
-          </GlassButton>
+            {theme === "dark" ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-violet-700" />}
+            <span className="hidden md:inline">{theme === "dark" ? "Light" : "Dark"}</span>
+          </button>
 
           {/* Architecture Graph Modal Trigger */}
           {onOpenArchitecture && (
-            <GlassButton
-              variant="ghost"
-              size="sm"
-              icon={<Layers className="w-4 h-4 text-violet-600 dark:text-violet-400" />}
+            <button
               onClick={onOpenArchitecture}
-              className="hidden lg:inline-flex text-slate-800 dark:text-slate-200 font-semibold"
+              className="p-2 sm:px-3 sm:py-1.5 rounded-xl border border-[var(--glass-border)] bg-[var(--pill-bg)] hover:bg-slate-500/10 text-slate-800 dark:text-slate-200 flex items-center gap-1.5 transition-all text-xs font-semibold cursor-pointer shrink-0"
+              title="LangGraph Agent Architecture"
             >
-              Graph Architecture
-            </GlassButton>
+              <Layers className="w-4 h-4 text-violet-600 dark:text-violet-400" />
+              <span className="hidden md:inline">Architecture</span>
+            </button>
           )}
 
           {/* Reset / New Session */}
           {hasActiveSession && onReset && (
-            <GlassButton
-              variant="secondary"
-              size="sm"
-              icon={<RefreshCw className="w-3.5 h-3.5 text-slate-300" />}
+            <button
               onClick={onReset}
+              className="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-violet-600/15 hover:bg-violet-600/25 border border-violet-500/30 text-violet-700 dark:text-violet-300 flex items-center gap-1.5 transition-all text-xs font-semibold cursor-pointer shrink-0"
+              title="Start New Analysis"
             >
-              New Analysis
-            </GlassButton>
+              <RefreshCw className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" />
+              <span className="hidden sm:inline">New Analysis</span>
+            </button>
           )}
-
-          {/* Source Code placeholder — add your repo URL here */}
         </div>
       </div>
     </header>
